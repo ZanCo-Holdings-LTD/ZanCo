@@ -11,21 +11,22 @@ Corporate website for **ZanCo Holdings LTD** (Company No. 16938121), a multi-ven
 
 ```
 .
-├── index.html           # Homepage
-├── privacy.html         # Privacy Policy (both apps)
-├── terms.html           # Terms of Service
-├── eula.html            # End User License Agreement
-├── support.html         # Support & FAQ
-├── delete-account.html  # Account & Data Deletion
-├── cookies.html         # Cookie Policy
-├── css/
-│   └── styles.css
-├── images/
-│   ├── logo.png
-│   └── logo.svg
-├── js/
-│   └── main.js
-└── vercel.json          # Deployment config
+├── public/
+│   ├── index.html           # Homepage
+│   ├── privacy.html         # Privacy Policy (both apps)
+│   ├── terms.html           # Terms of Service
+│   ├── eula.html            # End User License Agreement
+│   ├── support.html         # Support & FAQ
+│   ├── delete-account.html  # Account & Data Deletion
+│   ├── cookies.html         # Cookie Policy
+│   ├── css/
+│   │   └── styles.css
+│   ├── images/
+│   │   ├── logo.png
+│   │   └── logo.svg
+│   └── js/
+│       └── main.js
+└── vercel.json              # Deployment config
 ```
 
 ## Tech Stack
