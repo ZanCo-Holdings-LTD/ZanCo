@@ -192,6 +192,20 @@ a:hover { color: var(--accent-primary); }
   padding: 0 8px;
 }
 
+/* Hero Headline - Full Width */
+.hero-headline {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 48px;
+  background: linear-gradient(135deg, #111827 0%, #4B5563 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 800;
+  width: 100%;
+}
+
 /* Hero Section */
 .hero {
   display: grid;
@@ -564,6 +578,7 @@ h2 {
   .grid3 { grid-template-columns: 1fr; }
   .two { grid-template-columns: 1fr; gap: 32px; }
   h1 { font-size: 2.8rem; }
+  .hero-headline { font-size: 2.4rem; margin-bottom: 32px; }
   
   .nav {
     flex-wrap: wrap;
