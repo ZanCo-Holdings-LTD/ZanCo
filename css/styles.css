@@ -3,7 +3,7 @@
    type scale, spacing, and radii. Edit here; split out later.
    ============================================================ */
 :root {
-  /* ── Colour palette (light mode) ─────────────────────── */
+  /* ── Colour palette ──────────────────────────────────── */
   --bg:                  #F3F5F9;
   --bg-gradient-start:   #ffffff;
   --bg-gradient-end:     #F3F5F9;
@@ -55,67 +55,6 @@
   --font-main: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* ── Dark mode token overrides ────────────────────────────── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg:                #0F1117;
-    --bg-gradient-start: #0F1117;
-    --bg-gradient-end:   #1A1C23;
-
-    --glass:             rgba(255, 255, 255, 0.04);
-    --glass-border:      rgba(255, 255, 255, 0.07);
-    --glass-hover:       rgba(255, 255, 255, 0.08);
-    --glass-shadow:      0 8px 32px rgba(0, 0, 0, 0.5);
-
-    --text:              #F3F4F6;
-    --text-secondary:    #9CA3AF;
-    --text-tertiary:     #6B7280;
-  }
-
-  body { background-color: var(--bg); }
-
-  h2, .brand .name strong { color: var(--text); }
-
-  .hero-headline {
-    background: linear-gradient(135deg, #F3F4F6 0%, #9CA3AF 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-  }
-
-  .nav {
-    background: rgba(15, 17, 23, 0.85);
-    border-color: rgba(255, 255, 255, 0.06);
-  }
-
-  .navlinks { background: rgba(255, 255, 255, 0.04); }
-
-  .pill:hover { background: rgba(255, 255, 255, 0.08); }
-
-  .project {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.08);
-  }
-
-  .mini {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.08);
-  }
-
-  .tag { background: rgba(255, 255, 255, 0.07); }
-
-  .tag.status-dev   { background: rgba(255, 255, 255, 0.06); color: var(--text-tertiary); }
-  .tag.status-smoke { background: rgba(59, 130, 246, 0.15);  color: var(--accent-primary); }
-  .tag.status-soon  { background: rgba(245, 158, 11, 0.12);  color: #FBBF24; }
-
-  .btn.secondary {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.12);
-    color: var(--text);
-  }
-
-  .footer { border-color: rgba(255, 255, 255, 0.07); }
-}
 
 /* ============================================================
    BASE
