@@ -1,44 +1,10 @@
-# ZanCo Holdings LTD — Website
+# /internal
 
-Corporate website for **ZanCo Holdings LTD** (Company No. 16938121), a multi-venture technology holding company registered in England & Wales.
+Working files for the ZanCo Holdings portfolio. Not part of the public site build.
 
-## Ventures
+- `PORTFOLIO_TRACKER.md` — the full state of every venture, decision log, open questions, milestones.
+- `STATUS.md` — one-page snapshot for quick reads at session start/end.
 
-- **RevSense** — On-device ML-powered vehicle audio diagnostics (iOS)
-- **RideSafar** — Saudi-focused ride-hailing and transport platform (iOS)
+These files are intended to sync with planning conversations (currently with Claude). Update them at the end of each session. When something material changes, append to the decision log rather than rewriting — the history is the value.
 
-## Structure
-
-```
-.
-├── public/
-│   ├── index.html           # Homepage
-│   ├── privacy.html         # Privacy Policy (both apps)
-│   ├── terms.html           # Terms of Service
-│   ├── eula.html            # End User License Agreement
-│   ├── support.html         # Support & FAQ
-│   ├── delete-account.html  # Account & Data Deletion
-│   ├── cookies.html         # Cookie Policy
-│   ├── css/
-│   │   └── styles.css
-│   ├── images/
-│   │   ├── logo.png
-│   │   └── logo.svg
-│   └── js/
-│       └── main.js
-└── vercel.json              # Deployment config
-```
-
-## Tech Stack
-
-Static HTML, CSS, and vanilla JavaScript. No frameworks, no build step.
-
-## Deployment
-
-Hosted on [Vercel](https://vercel.com). Deploys automatically on push to `main`.
-
-## Contact
-
-- **Email:** zancoholdings.uk@gmail.com
-- **Phone:** +44 7852 580 895
-- **LinkedIn:** [abdulrhussain](https://www.linkedin.com/in/abdulrhussain/)
+If this folder ever needs to become a separate private repo (e.g. for sensitive supplier/contract info), it lifts out cleanly because it has no cross-dependencies with the public site code.
