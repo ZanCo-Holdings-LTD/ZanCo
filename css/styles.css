@@ -479,6 +479,14 @@ h2 {
 .tag.status-smoke { background: rgba(59, 130, 246, 0.1);      color: var(--accent-primary); }
 .tag.status-soon  { background: rgba(245, 158, 11, 0.1);      color: #D97706; }
 
+/* Venture brand logo inside a portfolio card */
+.venture-logo {
+  height: 88px;
+  width: auto;
+  align-self: flex-start;
+  margin: 4px 0 -4px;
+}
+
 .project h3 {
   font-size: var(--type-xl);
   margin: 0;
