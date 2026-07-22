@@ -1,10 +1,47 @@
-# /internal
+# ZanCo Holdings LTD — Website
 
-Working files for the ZanCo Holdings portfolio. Not part of the public site build.
+The public website for **ZanCo Holdings LTD**, a UK-registered technology holding
+company (Companies House No. 16938121). Live at **[zancoholdings.com](https://zancoholdings.com)**.
 
-- `PORTFOLIO_TRACKER.md` — the full state of every venture, decision log, open questions, milestones.
-- `STATUS.md` — one-page snapshot for quick reads at session start/end.
+This is a static site — plain HTML, CSS, and a small amount of vanilla
+JavaScript. There is no build step, framework, or package manager.
 
-These files are intended to sync with planning conversations (currently with Claude). Update them at the end of each session. When something material changes, append to the decision log rather than rewriting — the history is the value.
+## Structure
 
-If this folder ever needs to become a separate private repo (e.g. for sensitive supplier/contract info), it lifts out cleanly because it has no cross-dependencies with the public site code.
+```
+.
+├── index.html            # Homepage (about, portfolio, philosophy, contact)
+├── privacy.html          # Legal & support pages
+├── terms.html
+├── eula.html
+├── cookies.html
+├── delete-account.html
+├── support.html
+├── css/
+│   └── styles.css        # All styles; design tokens live in the :root block
+├── js/
+│   └── main.js           # Mobile nav toggle
+├── images/               # favicon and logos
+└── CNAME                 # Custom domain for GitHub Pages
+```
+
+## Local preview
+
+No tooling required — open `index.html` in a browser, or serve the folder:
+
+```bash
+python3 -m http.server 8000   # then visit http://localhost:8000
+```
+
+## Deployment
+
+The site is hosted on **GitHub Pages**, served from the `main` branch at the
+custom domain in `CNAME`. Every push to `main` triggers an automatic redeploy —
+there is no separate build or release step.
+
+## Editing notes
+
+- Design tokens (colour, type scale, spacing, radii) are centralised in the
+  `:root` block at the top of `css/styles.css`.
+- The legal pages (`privacy`, `terms`, `eula`, `cookies`, `delete-account`) are
+  legal documents — review content changes carefully before publishing.

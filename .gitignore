@@ -1,4 +1,9 @@
+# macOS
 .DS_Store
-*.DS_Store
-.claude
-.vercel
+
+# Local tooling / editor
+.claude/
+.vscode/
+
+# Vercel (legacy — the site deploys via GitHub Pages, not Vercel)
+.vercel/
