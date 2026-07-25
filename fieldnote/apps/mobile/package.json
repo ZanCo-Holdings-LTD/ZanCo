@@ -1,0 +1,35 @@
+{
+  "name": "@fieldnote/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "echo 'Mobile ships through EAS, not the workspace build' && exit 0"
+  },
+  "dependencies": {
+    "@fieldnote/shared": "workspace:*",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@supabase/supabase-js": "^2.46.1",
+    "expo": "~52.0.0",
+    "expo-av": "~15.0.1",
+    "expo-camera": "~16.0.7",
+    "expo-file-system": "~18.0.4",
+    "expo-image-picker": "~16.0.3",
+    "expo-network": "~7.0.3",
+    "expo-router": "~4.0.9",
+    "expo-sqlite": "~15.0.3",
+    "expo-task-manager": "~12.0.3",
+    "react": "18.3.1",
+    "react-native": "0.76.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
+  }
+}

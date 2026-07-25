@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "Fieldnote",
+    "slug": "fieldnote",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "fieldnote",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.fieldnote.app",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Fieldnote records your spoken notes while you walk the property, so you do not have to type the report afterwards.",
+        "NSCameraUsageDescription": "Fieldnote attaches photographs to your notes at the moment you take them.",
+        "NSPhotoLibraryUsageDescription": "Fieldnote attaches photographs you have already taken to the relevant part of your notes.",
+        "UIBackgroundModes": ["audio", "processing"]
+      }
+    },
+    "android": {
+      "package": "com.fieldnote.app",
+      "permissions": [
+        "RECORD_AUDIO",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_NETWORK_STATE",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_MICROPHONE",
+        "WAKE_LOCK"
+      ],
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Fieldnote records your spoken notes on site."
+        }
+      ],
+      "expo-sqlite"
+    ],
+    "experiments": { "typedRoutes": true }
+  }
+}
