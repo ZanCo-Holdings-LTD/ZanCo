@@ -1,0 +1,43 @@
+{
+  "name": "fieldnote",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Voice-first site inspection reporting. The phone captures, the web reviews.",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.12.3",
+  "scripts": {
+    "build": "pnpm -r --filter=./packages/* build && pnpm -r --filter=./apps/* build",
+    "dev": "pnpm --parallel --filter=@fieldnote/web --filter=@fieldnote/worker dev",
+    "dev:web": "pnpm --filter=@fieldnote/web dev",
+    "dev:worker": "pnpm --filter=@fieldnote/worker dev",
+    "dev:mobile": "pnpm --filter=@fieldnote/mobile start",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,yml,yaml}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:rls": "pnpm --filter=@fieldnote/db test:rls",
+    "db:generate": "pnpm --filter=@fieldnote/db generate",
+    "db:migrate": "pnpm --filter=@fieldnote/db migrate",
+    "db:seed": "pnpm --filter=@fieldnote/db seed",
+    "db:reset": "pnpm --filter=@fieldnote/db reset",
+    "eval": "pnpm --filter=@fieldnote/ai eval",
+    "check": "pnpm typecheck && pnpm lint && pnpm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/node": "^22.10.1",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.16.0",
+    "vitest": "^2.1.6"
+  }
+}
