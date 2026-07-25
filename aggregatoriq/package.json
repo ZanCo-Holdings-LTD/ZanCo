@@ -1,0 +1,48 @@
+{
+  "name": "aggregatoriq",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reconciliation engine for Gulf restaurants selling through delivery aggregators.",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter @aggregatoriq/web build && pnpm --filter @aggregatoriq/worker build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run --project unit",
+    "test:unit": "vitest run --project unit",
+    "test:db": "vitest run --project db",
+    "test:all": "vitest run",
+    "test:watch": "vitest",
+    "db:migrate": "pnpm --filter @aggregatoriq/db migrate",
+    "db:seed": "pnpm --filter @aggregatoriq/db seed",
+    "db:reset": "pnpm --filter @aggregatoriq/db reset",
+    "dev": "pnpm --parallel --filter @aggregatoriq/web --filter @aggregatoriq/worker dev",
+    "dev:web": "pnpm --filter @aggregatoriq/web dev",
+    "dev:worker": "pnpm --filter @aggregatoriq/worker dev",
+    "ci": "pnpm typecheck && pnpm lint && pnpm test:all"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@tailwindcss/oxide",
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@types/node": "22.20.1",
+    "eslint": "9.39.5",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.47.0",
+    "vitest": "3.2.7"
+  }
+}

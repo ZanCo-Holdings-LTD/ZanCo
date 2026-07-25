@@ -1,0 +1,29 @@
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+.env
+.env.local
+.env.*.local
+!.env.example
+
+.DS_Store
+.idea/
+.vscode/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+.pnpm-store/
+.turbo/
+.vercel/
+.fly/
+
+# Real customer statements. These are a restaurant's commercial records and
+# must never enter version control, however convenient a fixture they'd make.
+fixtures/real/
+**/statements-real/
