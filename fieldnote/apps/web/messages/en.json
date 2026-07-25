@@ -1,0 +1,78 @@
+{
+  "common": {
+    "appName": "Fieldnote",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading",
+    "signOut": "Sign out",
+    "language": "Language"
+  },
+  "nav": {
+    "reports": "Reports",
+    "templates": "Templates",
+    "team": "Team",
+    "settings": "Settings"
+  },
+  "status": {
+    "draft": "Draft",
+    "processing": "Processing",
+    "needs_review": "Needs review",
+    "ready": "Ready to send",
+    "sent": "Sent"
+  },
+  "dashboard": {
+    "title": "Reports",
+    "subtitle": "Everything captured on site, waiting for review.",
+    "search": "Search address, client or reference",
+    "empty": {
+      "title": "No reports yet",
+      "body": "Reports appear here as soon as you finish a capture on the Fieldnote app. Walk the property talking; review it here this evening.",
+      "action": "Get the mobile app"
+    },
+    "emptyFiltered": {
+      "title": "Nothing matches",
+      "body": "No reports match that search or filter."
+    },
+    "columns": {
+      "property": "Property",
+      "client": "Client",
+      "inspected": "Inspected",
+      "status": "Status"
+    }
+  },
+  "review": {
+    "title": "Review",
+    "sourceLabel": "What was said",
+    "playAudio": "Play this moment",
+    "generatedLabel": "Originally drafted",
+    "editedBadge": "Edited",
+    "confirmedBadge": "Checked",
+    "confirm": "Looks right",
+    "confirmSection": "Mark section checked",
+    "amberHint": "Low confidence. Check this against what you said before sending.",
+    "emptyRequired": "Required, and nothing was captured for it.",
+    "noSource": "No source recording for this value.",
+    "export": "Export PDF",
+    "exportBlocked": "{count, plural, =1 {# field still needs checking} other {# fields still need checking}}",
+    "exportReady": "Everything checked. Ready to export.",
+    "photos": "Photographs"
+  },
+  "delivery": {
+    "title": "Send to client",
+    "to": "Client email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send report",
+    "sent": "Sent {date}",
+    "opened": "Opened {date}",
+    "versionHistory": "Version history",
+    "version": "Version {number}"
+  },
+  "errors": {
+    "unauthorized": "Please sign in again.",
+    "forbidden": "You do not have access to that.",
+    "notFound": "That could not be found.",
+    "exportBlocked": "Some fields still need checking before this can be exported.",
+    "generic": "Something went wrong. Please try again."
+  }
+}

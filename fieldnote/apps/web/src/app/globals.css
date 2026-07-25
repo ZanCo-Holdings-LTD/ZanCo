@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Arabic needs a face that actually has the glyphs, and slightly more leading
+   than the Latin default — Arabic script sits taller. */
+html[lang='ar'] {
+  --font-sans: 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+  line-height: 1.75;
+}
+
+body {
+  @apply bg-paper text-ink antialiased;
+}
+
+/* The amber state is the product's single most important affordance: it marks
+   a value a human must look at before a client can receive it. It is styled
+   once, here, so it cannot drift between the field row and the export bar. */
+.amber-field {
+  @apply border-s-4 border-amber-border bg-amber-bg;
+}
+
+/* Focus must stay obvious. A reviewer works through thirty fields by keyboard
+   and losing their place is how a field gets skipped. */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-ink;
+}
+
+@media print {
+  .no-print {
+    display: none;
+  }
+}
