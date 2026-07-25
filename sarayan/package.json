@@ -1,0 +1,25 @@
+{
+  "name": "sarayan",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sarayan \u2014 document and certification expiry management for Gulf businesses",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace @sarayan/web",
+    "build": "npm run build --workspace @sarayan/web",
+    "start": "npm run start --workspace @sarayan/web",
+    "lint": "npm run lint --workspace @sarayan/web",
+    "typecheck": "npm run typecheck --workspace @sarayan/web",
+    "test": "node --import tsx --test \"packages/*/test/*.test.ts\" \"apps/web/test/*.test.ts\"",
+    "db:generate": "npm run db:generate --workspace @sarayan/web",
+    "db:push": "npm run db:push --workspace @sarayan/web",
+    "db:migrate": "npm run db:migrate --workspace @sarayan/web",
+    "db:seed": "npm run db:seed --workspace @sarayan/web"
+  }
+}

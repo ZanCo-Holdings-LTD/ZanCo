@@ -7,3 +7,11 @@
 
 # Vercel (legacy — the site deploys via GitHub Pages, not Vercel)
 .vercel/
+
+# Sarayan app (Next.js workspace)
+sarayan/node_modules/
+sarayan/**/node_modules/
+sarayan/**/.next/
+sarayan/**/.storage/
+sarayan/**/next-env.d.ts
+sarayan/**/*.tsbuildinfo

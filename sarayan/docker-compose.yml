@@ -1,0 +1,44 @@
+# Local stack: Postgres plus the app. `docker compose up` gives a working
+# Sarayan on http://localhost:3000 with nothing else configured.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sarayan
+      POSTGRES_PASSWORD: sarayan
+      POSTGRES_DB: sarayan
+    ports: ["5432:5432"]
+    volumes: ["sarayan-db:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sarayan"]
+      interval: 5s
+      retries: 10
+
+  web:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgres://sarayan:sarayan@db:5432/sarayan
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      SESSION_SECRET: development-only-change-me-in-production-000
+      MASTER_ENCRYPTION_KEY: ZGV2ZWxvcG1lbnQtb25seS1tYXN0ZXIta2V5LTMyYnk=
+      CRON_SECRET: development-cron-secret
+    ports: ["3000:3000"]
+    volumes: ["sarayan-files:/app/.storage"]
+
+  # Runs the alert ladder daily. In production use your platform's scheduler
+  # (Vercel Cron, a Kubernetes CronJob) rather than a sleeping container.
+  scheduler:
+    image: alpine:3.20
+    depends_on: [web]
+    command: >
+      sh -c "apk add --no-cache curl >/dev/null &&
+             while true; do
+               sleep 86400;
+               curl -fsS -X POST -H 'Authorization: Bearer development-cron-secret' http://web:3000/api/cron/alerts || true;
+             done"
+
+volumes:
+  sarayan-db:
+  sarayan-files:

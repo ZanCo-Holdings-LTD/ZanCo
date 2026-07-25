@@ -1,0 +1,7 @@
+Holder name,Holder type,Entity,Document type,Document number,Issue date,Expiry date,Issuing authority,Responsible,Notes
+Ahmed Al Marzooqi,person,Head office,Residence visa,784-1990-1234567-1,2024-09-12,2026-09-11,GDRFA Dubai,HR Manager,Renew with Emirates ID together
+Ahmed Al Marzooqi,person,Head office,Emirates ID,784-1990-1234567-1,2024-09-14,2026-09-13,ICP,HR Manager,
+Head office,entity,Head office,Trade licence,CN-1234567,2025-11-01,2026-10-31,Dubai DET,Finance Director,Ejari must be valid first
+Head office,entity,Head office,Ejari tenancy registration,EJ-889912,2025-08-15,2026-08-14,Dubai Land Department,Admin Manager,Chase landlord 60 days out
+Fleet vehicle 1,vehicle,Head office,Vehicle registration (Mulkiya),A-45892,2025-06-20,2026-06-19,RTA,Fleet Supervisor,Test due for vehicles over 3 years
+Fleet vehicle 1,vehicle,Head office,Vehicle insurance policy,POL-2299184,2025-06-10,2026-07-09,Insurer,Fleet Supervisor,13-month policy
