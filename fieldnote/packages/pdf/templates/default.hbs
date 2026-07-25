@@ -1,0 +1,91 @@
+<!--
+  Default report layout.
+
+  Vertical-specific templates (damp-timber.hbs, eicr.hbs) extend this shape.
+  Any change here changes every report a customer has ever sent, so it goes
+  through a design partner before it ships.
+-->
+<meta charset="utf-8" />
+<title>{{propertyAddress}}</title>
+<style>
+  /* {{STYLES}} */
+</style>
+
+{{#if branding.letterheadDataUri}}
+  <img class="letterhead--image" src="{{branding.letterheadDataUri}}" alt="" />
+{{else}}
+  <header class="letterhead">
+    {{#if branding.logoDataUri}}
+      <img class="letterhead__logo" src="{{branding.logoDataUri}}" alt="" />
+    {{else}}
+      <div></div>
+    {{/if}}
+    <div class="letterhead__firm">
+      <strong>{{branding.companyName}}</strong>
+      {{#if branding.professionalBody}}<span>{{branding.professionalBody}}</span>{{/if}}
+    </div>
+  </header>
+{{/if}}
+
+<section class="title">
+  <h1>Inspection Report</h1>
+  <p class="address">{{propertyAddress}}</p>
+
+  <dl class="meta">
+    {{#if clientName}}
+      <dt>Client</dt><dd>{{clientName}}</dd>
+    {{/if}}
+    {{#if reference}}
+      <dt>Reference</dt><dd>{{reference}}</dd>
+    {{/if}}
+    {{#if inspectedAt}}
+      <dt>Inspected</dt><dd>{{inspectedAt}}</dd>
+    {{/if}}
+    <dt>Issued</dt><dd>{{renderedAt}}</dd>
+    <dt>Version</dt><dd>{{versionLabel}}</dd>
+    <dt>Surveyor</dt><dd>{{branding.surveyorName}}</dd>
+  </dl>
+</section>
+
+{{#each sections}}
+  <section class="section">
+    <h2>{{inc @index}}. {{title}}</h2>
+
+    {{#each fields}}
+      <div class="field {{#unless isProse}}field--inline{{/unless}} {{#if isEmpty}}field--empty{{/if}}">
+        <div class="field__label">{{label}}</div>
+        <div class="field__value">
+          {{#if isProse}}{{paragraphs value}}{{else}}{{value}}{{/if}}
+        </div>
+      </div>
+    {{/each}}
+
+    {{#if photos.length}}
+      <div class="photos">
+        {{#each photos}}
+          <figure class="photo">
+            <img src="{{dataUri}}" alt="" />
+            {{#if caption}}
+              <figcaption>
+                {{caption}}
+                {{#if timestamp}}<span class="timestamp"> — {{timestamp}}</span>{{/if}}
+              </figcaption>
+            {{/if}}
+          </figure>
+        {{/each}}
+      </div>
+    {{/if}}
+  </section>
+{{/each}}
+
+<section class="signoff">
+  {{#if branding.signatureDataUri}}
+    <img class="signoff__signature" src="{{branding.signatureDataUri}}" alt="" />
+  {{/if}}
+  <div class="signoff__name">{{branding.surveyorName}}</div>
+  <div class="signoff__body">
+    {{branding.companyName}}{{#if branding.professionalBody}} &middot; {{branding.professionalBody}}{{/if}}
+  </div>
+</section>
+
+<aside class="disclaimer">{{disclaimer}}</aside>

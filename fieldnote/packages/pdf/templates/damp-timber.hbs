@@ -1,0 +1,103 @@
+<!--
+  Damp and timber survey (PCA format).
+
+  Differs from the default in ways a surveyor in this field will notice: the
+  title names the survey type, limitations are given their own visual weight
+  rather than being buried as another numbered section, and the sign-off block
+  carries the professional body membership that clients check.
+
+  This layout must be reviewed against a real firm's existing report before it
+  goes to a paying customer. "Close enough" is not the bar — the bar is that a
+  design partner cannot tell it from their own.
+-->
+<meta charset="utf-8" />
+<title>Damp and Timber Survey — {{propertyAddress}}</title>
+<style>
+  /* {{STYLES}} */
+
+  .limitations {
+    break-inside: avoid;
+    margin: 8mm 0;
+    padding: 5mm;
+    border: 0.75pt solid #1a1a1a;
+  }
+
+  .limitations h2 {
+    border-bottom: none;
+    margin-bottom: 3mm;
+    font-size: 11.5pt;
+  }
+</style>
+
+{{#if branding.letterheadDataUri}}
+  <img class="letterhead--image" src="{{branding.letterheadDataUri}}" alt="" />
+{{else}}
+  <header class="letterhead">
+    {{#if branding.logoDataUri}}
+      <img class="letterhead__logo" src="{{branding.logoDataUri}}" alt="" />
+    {{else}}
+      <div></div>
+    {{/if}}
+    <div class="letterhead__firm">
+      <strong>{{branding.companyName}}</strong>
+      {{#if branding.professionalBody}}<span>{{branding.professionalBody}}</span>{{/if}}
+    </div>
+  </header>
+{{/if}}
+
+<section class="title">
+  <h1>Damp and Timber Survey</h1>
+  <p class="address">{{propertyAddress}}</p>
+
+  <dl class="meta">
+    {{#if clientName}}<dt>Client</dt><dd>{{clientName}}</dd>{{/if}}
+    {{#if reference}}<dt>Our reference</dt><dd>{{reference}}</dd>{{/if}}
+    {{#if inspectedAt}}<dt>Date of inspection</dt><dd>{{inspectedAt}}</dd>{{/if}}
+    <dt>Date of issue</dt><dd>{{renderedAt}}</dd>
+    <dt>Report version</dt><dd>{{versionLabel}}</dd>
+    <dt>Surveyor</dt><dd>{{branding.surveyorName}}</dd>
+  </dl>
+</section>
+
+{{#each sections}}
+  <section class="section {{#if (eq title 'Limitations of inspection')}}limitations{{/if}}">
+    <h2>{{inc @index}}. {{title}}</h2>
+
+    {{#each fields}}
+      <div class="field {{#unless isProse}}field--inline{{/unless}} {{#if isEmpty}}field--empty{{/if}}">
+        <div class="field__label">{{label}}</div>
+        <div class="field__value">
+          {{#if isProse}}{{paragraphs value}}{{else}}{{value}}{{/if}}
+        </div>
+      </div>
+    {{/each}}
+
+    {{#if photos.length}}
+      <div class="photos">
+        {{#each photos}}
+          <figure class="photo">
+            <img src="{{dataUri}}" alt="" />
+            {{#if caption}}
+              <figcaption>
+                {{caption}}
+                {{#if timestamp}}<span class="timestamp"> — {{timestamp}}</span>{{/if}}
+              </figcaption>
+            {{/if}}
+          </figure>
+        {{/each}}
+      </div>
+    {{/if}}
+  </section>
+{{/each}}
+
+<section class="signoff">
+  {{#if branding.signatureDataUri}}
+    <img class="signoff__signature" src="{{branding.signatureDataUri}}" alt="" />
+  {{/if}}
+  <div class="signoff__name">{{branding.surveyorName}}</div>
+  <div class="signoff__body">
+    {{branding.companyName}}{{#if branding.professionalBody}} &middot; {{branding.professionalBody}}{{/if}}
+  </div>
+</section>
+
+<aside class="disclaimer">{{disclaimer}}</aside>
