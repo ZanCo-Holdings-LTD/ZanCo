@@ -7,7 +7,7 @@
  * every policy dropped.
  */
 import { randomUUID } from 'node:crypto';
-import postgres from 'postgres';
+import type postgres from 'postgres';
 import { createDatabase, createPool, type Database } from '../src/client.js';
 
 export const TEST_DATABASE_URL = (): string => {

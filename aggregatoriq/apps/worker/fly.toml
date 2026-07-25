@@ -1,0 +1,39 @@
+app = "aggregatoriq-worker"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  HOST = "0.0.0.0"
+  NODE_ENV = "production"
+  LOG_LEVEL = "info"
+  STORAGE_DRIVER = "s3"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # Never scale to zero. Inbound email arrives when an aggregator sends it, and
+  # a cold start that times out a webhook is a customer's statement lost.
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = "requests"
+    # Parsing a month of orders is CPU-bound and not quick. A high concurrency
+    # limit here would queue statements behind each other on one machine.
+    soft_limit = 20
+    hard_limit = 40
+
+[[http_service.checks]]
+  grace_period = "10s"
+  interval = "30s"
+  method = "GET"
+  timeout = "5s"
+  path = "/health"
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "1gb"

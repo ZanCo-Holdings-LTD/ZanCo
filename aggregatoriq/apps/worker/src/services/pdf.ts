@@ -55,8 +55,11 @@ export function rule(): PdfBlock {
  * a transliterated restaurant name.
  */
 function escapeText(text: string): string {
+  // WinAnsi's printable ranges: ASCII, then the Latin-1 supplement. Written as
+  // explicit escapes because the literal form contains a non-breaking space,
+  // which is invisible in review and trivially broken by an editor.
   return text
-    .replace(/[^\x20-\x7e -ÿ]/g, '?')
+    .replace(/[^\x20-\x7e\xa0-\xff]/g, '?')
     .replace(/\\/g, '\\\\')
     .replace(/\(/g, '\\(')
     .replace(/\)/g, '\\)');

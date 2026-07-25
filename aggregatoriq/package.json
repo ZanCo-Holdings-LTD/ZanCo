@@ -2,6 +2,7 @@
   "name": "aggregatoriq",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Reconciliation engine for Gulf restaurants selling through delivery aggregators.",
   "packageManager": "pnpm@10.33.0",
   "engines": {
