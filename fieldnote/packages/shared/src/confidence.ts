@@ -58,7 +58,10 @@ export function evaluateExportGate(fields: ReviewableField[]): ExportGate {
   for (const field of fields) {
     const flag = flagFor(field);
     if (flag === 'amber' && !isTouched(field)) untouchedAmberCount += 1;
-    if (field.required && (field.value === null || field.value === undefined || field.value === '')) {
+    if (
+      field.required &&
+      (field.value === null || field.value === undefined || field.value === '')
+    ) {
       missingRequiredCount += 1;
     }
   }

@@ -107,14 +107,14 @@ on every pull request.
 
 ## Metrics that matter
 
-| Metric | Target |
-| --- | --- |
-| Trial users delivering a real client report within 48 hours | 45% |
-| Reports per user per week | 5 (below 2 means testing, not using) |
-| Mean human edit distance per field | Falling |
-| Trial to paid | 25% |
-| Net revenue retention | Above 100% |
-| Inference cost per report, as a share of ARPU | Below 12%, alerted |
+| Metric                                                      | Target                               |
+| ----------------------------------------------------------- | ------------------------------------ |
+| Trial users delivering a real client report within 48 hours | 45%                                  |
+| Reports per user per week                                   | 5 (below 2 means testing, not using) |
+| Mean human edit distance per field                          | Falling                              |
+| Trial to paid                                               | 25%                                  |
+| Net revenue retention                                       | Above 100%                           |
+| Inference cost per report, as a share of ARPU               | Below 12%, alerted                   |
 
 Mean edit distance is the product's actual health. It should fall as the phrase
 corpus grows; a prompt change that raises it is a regression even if recall

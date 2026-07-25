@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { toAppError, type JobKind } from '@fieldnote/shared';
-import { db, repositories } from './db.js';
+import { repositories, workerDb } from './db.js';
 import { env } from './env.js';
 import { errorFields, log } from './logger.js';
 import { handleDeliver } from './handlers/deliver.js';
@@ -82,7 +82,7 @@ export class Runner {
 
       let claimed;
       try {
-        claimed = await repositories.jobs.claim(db, WORKER_ID, capacity);
+        claimed = await repositories.jobs.claim(workerDb(), WORKER_ID, capacity);
       } catch (error: unknown) {
         // A database blip must not kill the loop; back off and try again.
         log.error('failed to claim jobs', errorFields(error));
@@ -104,27 +104,29 @@ export class Runner {
     }
   }
 
-  private async run(job: Awaited<ReturnType<typeof repositories.jobs.claim>>[number]): Promise<void> {
+  private async run(
+    job: Awaited<ReturnType<typeof repositories.jobs.claim>>[number],
+  ): Promise<void> {
     const started = Date.now();
     const handler = HANDLERS[job.kind];
 
     if (!handler) {
       // An unknown kind means a deploy removed a handler that still has queued
       // work. Retrying forever would hide that, so it goes straight to dead.
-      await repositories.jobs.fail(db, job, `No handler for kind ${job.kind}`, false);
+      await repositories.jobs.fail(workerDb(), job, `No handler for kind ${job.kind}`, false);
       log.error('no handler for job kind', { jobId: job.id, kind: job.kind });
       return;
     }
 
     try {
       await handler({
-        db,
+        db: workerDb(),
         jobId: job.id,
         payload: job.payload,
         attempt: job.attempts,
         signal: this.controller.signal,
       });
-      await repositories.jobs.succeed(db, job.id);
+      await repositories.jobs.succeed(workerDb(), job.id);
       log.info('job succeeded', {
         jobId: job.id,
         kind: job.kind,
@@ -134,7 +136,7 @@ export class Runner {
     } catch (error: unknown) {
       const appError = toAppError(error);
       const outcome = await repositories.jobs.fail(
-        db,
+        workerDb(),
         job,
         `${appError.code}: ${appError.message}`,
         appError.retryable,

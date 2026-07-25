@@ -15,12 +15,22 @@ const span = {
 
 describe('scoreField', () => {
   it('counts a value against an empty expectation as a hallucination', () => {
-    const outcome = scoreField('f1', 's', { fieldKey: 'damp_type', expected: null }, field('Rising damp', span));
+    const outcome = scoreField(
+      'f1',
+      's',
+      { fieldKey: 'damp_type', expected: null },
+      field('Rising damp', span),
+    );
     expect(outcome.hallucinated).toBe(true);
   });
 
   it('counts a missing value against a real expectation as a miss', () => {
-    const outcome = scoreField('f1', 's', { fieldKey: 'damp_type', expected: 'Rising damp' }, field(null));
+    const outcome = scoreField(
+      'f1',
+      's',
+      { fieldKey: 'damp_type', expected: 'Rising damp' },
+      field(null),
+    );
     expect(outcome.missed).toBe(true);
   });
 
@@ -85,7 +95,12 @@ describe('aggregate', () => {
     const report = aggregate(
       [
         ...clean,
-        scoreField('f1', 's', { fieldKey: 'd', expected: 'Rising damp' }, field('Rising damp', null)),
+        scoreField(
+          'f1',
+          's',
+          { fieldKey: 'd', expected: 'Rising damp' },
+          field('Rising damp', null),
+        ),
       ],
       1,
     );

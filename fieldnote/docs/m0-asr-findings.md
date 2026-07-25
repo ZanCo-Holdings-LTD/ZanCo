@@ -20,12 +20,12 @@ Two weeks, about £300, no software beyond a throwaway script.
 
 Five inspectors, recording in the conditions that actually break ASR:
 
-| Condition | Why it is on the list |
-| --- | --- |
-| Loft with a dehumidifier running | Broadband mechanical noise at close range. The single most common damp-survey environment. |
-| Plant room | Reverberant, hard surfaces, intermittent loud machinery. |
-| Windy roof | Wind noise directly across the microphone; the hardest case for any ASR. |
-| Strong non-native English accent (×2 minimum) | The GCC vertical and much of the UK trade workforce. Accent robustness is not optional. |
+| Condition                                     | Why it is on the list                                                                      |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Loft with a dehumidifier running              | Broadband mechanical noise at close range. The single most common damp-survey environment. |
+| Plant room                                    | Reverberant, hard surfaces, intermittent loud machinery.                                   |
+| Windy roof                                    | Wind noise directly across the microphone; the hardest case for any ASR.                   |
+| Strong non-native English accent (×2 minimum) | The GCC vertical and much of the UK trade workforce. Accent robustness is not optional.    |
 
 Push each recording through Deepgram Nova, then through a structuring prompt
 against a real report template.
@@ -54,8 +54,8 @@ Fill this in. Do not summarise; record the numbers.
 ### Word error rate by condition
 
 | Inspector | Condition | Recording length | WER | Notes |
-| --- | --- | --- | --- | --- |
-| | | | | |
+| --------- | --------- | ---------------- | --- | ----- |
+|           |           |                  |     |       |
 
 Compute WER against a human transcript of the same audio, not against the
 inspector's memory of what they said.
@@ -63,8 +63,8 @@ inspector's memory of what they said.
 ### Time comparison
 
 | Inspector | Report | Time to write from scratch | Time to correct structured output | Verdict |
-| --- | --- | --- | --- | --- |
-| | | | | |
+| --------- | ------ | -------------------------- | --------------------------------- | ------- |
+|           |        |                            |                                   |         |
 
 ### Domain vocabulary the model got wrong
 
@@ -73,8 +73,8 @@ list (`packages/db/src/seed/templates/`). This table is the most directly useful
 output of the whole exercise.
 
 | Said | Transcribed as | Frequency | Added to boost list |
-| --- | --- | --- | --- |
-| | | | |
+| ---- | -------------- | --------- | ------------------- |
+|      |                |           |                     |
 
 ### Structuring quality
 
@@ -83,8 +83,8 @@ here is the single most important observation in the test — record the exact
 transcript and the exact fabricated output, and turn it into an eval fixture.
 
 | Field | Correct | Missed | Fabricated | Notes |
-| --- | --- | --- | --- | --- |
-| | | | | |
+| ----- | ------- | ------ | ---------- | ----- |
+|       |         |        |            |       |
 
 ## Gate decision
 

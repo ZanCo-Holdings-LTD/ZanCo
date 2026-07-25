@@ -50,7 +50,10 @@ export function reportCost(
   captureDurationsMs: number[],
   usages: StructuringUsage[],
 ): ReportCostBreakdown {
-  const transcriptionUsd = captureDurationsMs.reduce((sum, ms) => sum + transcriptionCostUsd(ms), 0);
+  const transcriptionUsd = captureDurationsMs.reduce(
+    (sum, ms) => sum + transcriptionCostUsd(ms),
+    0,
+  );
   const structuringUsd = usages.reduce((sum, usage) => sum + structuringCostUsd(usage), 0);
   return {
     transcriptionUsd,

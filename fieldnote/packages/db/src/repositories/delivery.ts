@@ -8,6 +8,8 @@ export interface RecordVersionInput {
   pdfPath: string;
   snapshot: string;
   byteSize: number;
+  /** Release that rendered it, so an old PDF stays attributable. */
+  engineVersion: string;
   renderedBy: string | null;
 }
 
@@ -29,6 +31,7 @@ export async function recordVersion(
       pdfPath: input.pdfPath,
       snapshot: input.snapshot,
       byteSize: input.byteSize,
+      engineVersion: input.engineVersion,
       renderedBy: input.renderedBy,
     })
     .returning({ id: reportVersions.id, versionNo: reportVersions.versionNo });
@@ -100,11 +103,7 @@ export async function markSent(
     .where(eq(deliveries.id, deliveryId));
 }
 
-export async function markFailed(
-  db: Database,
-  deliveryId: string,
-  reason: string,
-): Promise<void> {
+export async function markFailed(db: Database, deliveryId: string, reason: string): Promise<void> {
   await db
     .update(deliveries)
     .set({ failedAt: new Date(), failureReason: reason.slice(0, 500) })
@@ -116,9 +115,7 @@ export async function markOpened(db: Database, providerMessageId: string): Promi
   await db
     .update(deliveries)
     .set({ openedAt: new Date() })
-    .where(
-      and(eq(deliveries.providerMessageId, providerMessageId), isNull(deliveries.openedAt)),
-    );
+    .where(and(eq(deliveries.providerMessageId, providerMessageId), isNull(deliveries.openedAt)));
 }
 
 export async function listForReport(db: Database, reportId: string) {

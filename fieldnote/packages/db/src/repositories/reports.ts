@@ -122,7 +122,12 @@ export async function updateMetadata(
   db: Database,
   orgId: string,
   reportId: string,
-  patch: Partial<Pick<CreateReportInput, 'propertyAddress' | 'clientName' | 'clientEmail' | 'reference' | 'inspectedAt'>>,
+  patch: Partial<
+    Pick<
+      CreateReportInput,
+      'propertyAddress' | 'clientName' | 'clientEmail' | 'reference' | 'inspectedAt'
+    >
+  >,
 ): Promise<void> {
   await db
     .update(reports)

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Transcript } from '@fieldnote/shared';
-import { mergeTranscripts } from './structure.js';
+import { mergeTranscripts } from './transcripts.js';
 
 function make(text: string, durationMs: number, wordStartMs = 0): Transcript {
   return {

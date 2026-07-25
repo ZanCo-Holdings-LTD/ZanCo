@@ -51,10 +51,9 @@ async function loadTemplate(name: string): Promise<HandlebarsTemplateDelegate<Re
   }
 
   const layout = await readFile(join(templatesDir, 'layout.css'), 'utf8');
-  const template = handlebars.compile<ReportModel>(
-    source.replace('/* {{STYLES}} */', layout),
-    { noEscape: false },
-  );
+  const template = handlebars.compile<ReportModel>(source.replace('/* {{STYLES}} */', layout), {
+    noEscape: false,
+  });
   compiled.set(name, template);
   return template;
 }
@@ -90,10 +89,7 @@ export interface RenderedPdf {
   html: string;
 }
 
-export async function renderPdf(
-  model: ReportModel,
-  options: RenderOptions,
-): Promise<RenderedPdf> {
+export async function renderPdf(model: ReportModel, options: RenderOptions): Promise<RenderedPdf> {
   const html = await renderHtml(model, options);
   const instance = await getBrowser(options.executablePath);
   const context = await instance.newContext();

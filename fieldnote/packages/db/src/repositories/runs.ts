@@ -43,10 +43,7 @@ export async function finish(
   runId: string,
   status: 'succeeded' | 'failed',
 ): Promise<void> {
-  await db
-    .update(reconRuns)
-    .set({ status, finishedAt: new Date() })
-    .where(eq(reconRuns.id, runId));
+  await db.update(reconRuns).set({ status, finishedAt: new Date() }).where(eq(reconRuns.id, runId));
 }
 
 /** Run history for a report, newest first. Surfaced in the review workspace. */

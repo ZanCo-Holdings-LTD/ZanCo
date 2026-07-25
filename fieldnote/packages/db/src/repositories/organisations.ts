@@ -68,11 +68,7 @@ export async function listMembers(db: Database, orgId: string) {
     .orderBy(orgMembers.createdAt);
 }
 
-export async function roleOf(
-  db: Database,
-  orgId: string,
-  userId: string,
-): Promise<OrgRole | null> {
+export async function roleOf(db: Database, orgId: string, userId: string): Promise<OrgRole | null> {
   const [row] = await db
     .select({ role: orgMembers.role })
     .from(orgMembers)

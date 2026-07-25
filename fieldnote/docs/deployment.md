@@ -37,12 +37,12 @@ deploy.
 
 Create four buckets, **all private**:
 
-| Bucket | Contents |
-| --- | --- |
-| `captures` | Site audio |
-| `media` | Site photographs |
+| Bucket     | Contents                       |
+| ---------- | ------------------------------ |
+| `captures` | Site audio                     |
+| `media`    | Site photographs               |
 | `branding` | Logos, letterheads, signatures |
-| `reports` | Rendered PDFs |
+| `reports`  | Rendered PDFs                  |
 
 Nothing is ever served from a public URL. Access is by short-lived signed URL
 only — audio, photographs and reports are all client material about real
@@ -130,10 +130,10 @@ client component is a build error rather than a leak.
 
 ## 4. Webhooks
 
-| Provider | Endpoint | Notes |
-| --- | --- | --- |
-| Resend | `https://<worker>/webhooks/resend` | Subscribe to `email.opened`. Signature-verified; without that anyone could mark a report delivered. |
-| Stripe | `https://<app>/api/webhooks/stripe` | Subscription lifecycle. |
+| Provider | Endpoint                            | Notes                                                                                               |
+| -------- | ----------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Resend   | `https://<worker>/webhooks/resend`  | Subscribe to `email.opened`. Signature-verified; without that anyone could mark a report delivered. |
+| Stripe   | `https://<app>/api/webhooks/stripe` | Subscription lifecycle.                                                                             |
 
 ## 5. Mobile
 

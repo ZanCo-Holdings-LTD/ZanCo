@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { getDb, repositories, withUser } from '@fieldnote/db';
 import type { Database } from '@fieldnote/db';
 import { forbidden, roleAtLeast, unauthorized, type OrgRole } from '@fieldnote/shared';
-import { serverClient } from './supabase';
+import { serverClient } from './supabase/server';
 
 /**
  * Request session.
@@ -26,7 +26,21 @@ export interface Session {
   role: OrgRole;
 }
 
-const db: Database = getDb({ max: 5 });
+/**
+ * Connection pool, resolved lazily.
+ *
+ * Opening it at module scope means `next build` tries to connect while
+ * collecting page data, so a build with no DATABASE_URL fails — and every
+ * module that transitively imports this one becomes untestable without a live
+ * database. Serverless functions get a small pool because each instance handles
+ * one request at a time.
+ */
+let pool: Database | undefined;
+
+function db(): Database {
+  pool ??= getDb({ max: 5 });
+  return pool;
+}
 
 export async function currentUser(): Promise<{ userId: string; email: string | null } | null> {
   const supabase = await serverClient();
@@ -47,7 +61,7 @@ export async function getSession(): Promise<Session | null> {
   const user = await currentUser();
   if (!user) return null;
 
-  const memberships = await withUser(db, user.userId, (tx) =>
+  const memberships = await withUser(db(), user.userId, (tx) =>
     repositories.organisations.listForUser(tx, user.userId),
   );
   if (memberships.length === 0) return null;
@@ -88,16 +102,12 @@ export async function requireRole(minimum: OrgRole): Promise<Session> {
  * Every read and write in the web app goes through here. There is no
  * service-role path in this application — the worker owns that.
  */
-export async function query<T>(
-  session: Session,
-  fn: (tx: Database) => Promise<T>,
-): Promise<T> {
-  return withUser(db, session.userId, fn);
+export async function query<T>(session: Session, fn: (tx: Database) => Promise<T>): Promise<T> {
+  return withUser(db(), session.userId, fn);
 }
 
 export async function listOrganisations(userId: string) {
-  return withUser(db, userId, (tx) => repositories.organisations.listForUser(tx, userId));
+  return withUser(db(), userId, (tx) => repositories.organisations.listForUser(tx, userId));
 }
 
 export const ORG_COOKIE_NAME = ORG_COOKIE;
-export { db as rawDb };

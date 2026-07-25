@@ -26,7 +26,8 @@ const SRC = join(import.meta.dirname, '..');
  * `mr-` catches `mr-2` but not `mr-auto`'s legitimate cousins in other words,
  * and so `border-l-` is caught without flagging `border-`.
  */
-const PHYSICAL_CLASS = /\b(?:ml|mr|pl|pr|left|right|border-l|border-r|rounded-l|rounded-r)-[\w[\]./]+/g;
+const PHYSICAL_CLASS =
+  /\b(?:ml|mr|pl|pr|left|right|border-l|border-r|rounded-l|rounded-r)-[\w[\]./]+/g;
 const PHYSICAL_TEXT_ALIGN = /\btext-(?:left|right)\b/g;
 
 /**

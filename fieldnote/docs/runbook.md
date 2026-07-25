@@ -24,7 +24,7 @@ curl -s https://<worker>/health | jq '.queue'
 
 - **`oldestQueuedAgeSeconds` climbing, `running` at concurrency.** The runner is
   saturated. Scale out (`fly scale count 2`) — claiming is `FOR UPDATE SKIP
-  LOCKED`, so extra machines are safe and need no coordination.
+LOCKED`, so extra machines are safe and need no coordination.
 
 - **`queued` above zero, `running` at zero.** The runner is not claiming. Check
   the machine is actually up (`fly status`) and that `auto_stop_machines` is
@@ -136,11 +136,11 @@ window where the old value still works.
 
 ## Escalation
 
-| Symptom | Severity |
-| --- | --- |
+| Symptom                                       | Severity                                            |
+| --------------------------------------------- | --------------------------------------------------- |
 | A value exists with no resolvable source span | **Sev 1** — the guardrail has a hole. Stop exports. |
-| A report was sent without human review | **Sev 1** — the gate has a hole. |
-| Cross-org data visible | **Sev 1** — RLS. Take the app offline. |
-| Queue not draining | Sev 2 |
-| Transcription quality drop | Sev 3 |
-| Cost alert | Sev 3 |
+| A report was sent without human review        | **Sev 1** — the gate has a hole.                    |
+| Cross-org data visible                        | **Sev 1** — RLS. Take the app offline.              |
+| Queue not draining                            | Sev 2                                               |
+| Transcription quality drop                    | Sev 3                                               |
+| Cost alert                                    | Sev 3                                               |

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { browserClient } from '@/lib/supabase';
+import { browserClient } from '@/lib/supabase/browser';
 
 export function SignInForm() {
   const [email, setEmail] = useState('');

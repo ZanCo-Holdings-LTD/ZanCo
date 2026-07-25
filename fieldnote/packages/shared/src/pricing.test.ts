@@ -47,9 +47,10 @@ describe('report cost instrumentation', () => {
 
   it('charges cached reads well below base input rate', () => {
     const cheap = reportCost([], [usage]);
-    const uncached = reportCost([], [
-      { ...usage, inputTokens: 52_000, cacheReadInputTokens: 0, cacheCreationInputTokens: 0 },
-    ]);
+    const uncached = reportCost(
+      [],
+      [{ ...usage, inputTokens: 52_000, cacheReadInputTokens: 0, cacheCreationInputTokens: 0 }],
+    );
     expect(cheap.structuringUsd).toBeLessThan(uncached.structuringUsd);
   });
 

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { PhotoContext, PhraseExample, Transcript } from '@fieldnote/shared';
-import { PROMPT_VERSION, structureSection } from '@fieldnote/ai';
+import { mergeTranscripts, PROMPT_VERSION, structureSection } from '@fieldnote/ai';
 import {
   costAsShareOfArpu,
   ENGINE_VERSION,
@@ -126,48 +126,6 @@ export async function handleStructure(context: JobContext): Promise<void> {
     await repositories.reports.setStatus(db, orgId, reportId, 'needs_review');
     await checkMargin(db, orgId, reportId);
   });
-}
-
-/**
- * Concatenate several captures into one transcript.
- *
- * Character offsets are what the provenance guarantee rests on, so the merged
- * text must be exactly what the model is shown and word timings must be shifted
- * by each capture's start. Getting this wrong would make every citation in a
- * multi-capture report point at the wrong audio.
- */
-export function mergeTranscripts(transcripts: Transcript[]): Transcript {
-  if (transcripts.length === 1) return transcripts[0]!;
-
-  const separator = '\n\n';
-  let text = '';
-  let elapsedMs = 0;
-  const words: Transcript['words'] = [];
-
-  for (const [index, transcript] of transcripts.entries()) {
-    if (index > 0) text += separator;
-    text += transcript.text;
-    for (const word of transcript.words) {
-      words.push({
-        ...word,
-        startMs: word.startMs + elapsedMs,
-        endMs: word.endMs + elapsedMs,
-      });
-    }
-    elapsedMs += transcript.durationMs;
-  }
-
-  const meanConfidence =
-    words.length === 0 ? 0 : words.reduce((sum, word) => sum + word.confidence, 0) / words.length;
-
-  return {
-    text,
-    words,
-    provider: transcripts[0]!.provider,
-    model: transcripts[0]!.model,
-    meanConfidence,
-    durationMs: elapsedMs,
-  };
 }
 
 async function loadPhotos(db: Db, reportId: string, sectionKey: string): Promise<PhotoContext[]> {

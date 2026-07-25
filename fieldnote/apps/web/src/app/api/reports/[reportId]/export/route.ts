@@ -37,7 +37,7 @@ export async function POST(
     });
 
     if (!gate.canExport) {
-      throw new AppError('export_blocked', gate.reasons.join('; '), { details: gate });
+      throw new AppError('export_blocked', gate.reasons.join('; '), { details: { ...gate } });
     }
 
     await enqueue({

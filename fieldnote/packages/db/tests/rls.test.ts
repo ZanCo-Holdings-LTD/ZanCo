@@ -163,8 +163,8 @@ beforeAll(async () => {
       on conflict (org_id) do nothing
     `;
     await tx`
-      insert into report_costs (org_id, report_id, structuring_usd)
-      values (${orgA}, ${reportA}, 0.02)
+      insert into report_costs (org_id, report_id, structuring_micros_usd)
+      values (${orgA}, ${reportA}, 20000)
     `;
   });
 });
@@ -229,6 +229,21 @@ describe('cross-org reads return nothing', () => {
   it('hides a specific report by id, not just by org filter', async () => {
     // A leaked report id must still be useless without membership.
     const rows = await asUser(BOB, (tx) => tx`select id from reports where id = ${reportA}`);
+    expect(rows).toHaveLength(0);
+  });
+
+  it('hides Bob’s report from Alice, by id', async () => {
+    const rows = await asUser(ALICE, (tx) => tx`select id from reports where id = ${reportB}`);
+    expect(rows).toHaveLength(0);
+  });
+
+  it('hides a capture belonging to another org, by id', async () => {
+    // Storage paths are derived from capture ids, so a leaked id must not be
+    // enough to locate someone else's site audio.
+    const rows = await asUser(
+      BOB,
+      (tx) => tx`select storage_path from captures where id = ${captureA}`,
+    );
     expect(rows).toHaveLength(0);
   });
 
@@ -312,7 +327,9 @@ describe('system templates are read-only to tenants', () => {
       ALICE,
       (tx) => tx`update templates set name = 'Tampered' where id = ${templateId}`,
     );
-    const [row] = await sql<{ name: string }[]>`select name from templates where id = ${templateId}`;
+    const [row] = await sql<
+      { name: string }[]
+    >`select name from templates where id = ${templateId}`;
     expect(row?.name).toBe('RLS System Template');
   });
 
@@ -349,7 +366,10 @@ describe('the audit log is append only', () => {
   });
 
   it('affects no rows on an update, because no update policy exists', async () => {
-    await asUser(ALICE, (tx) => tx`update audit_log set action = 'tampered' where org_id = ${orgA}`);
+    await asUser(
+      ALICE,
+      (tx) => tx`update audit_log set action = 'tampered' where org_id = ${orgA}`,
+    );
     const rows = await sql`select id from audit_log where action = 'tampered'`;
     expect(rows).toHaveLength(0);
   });

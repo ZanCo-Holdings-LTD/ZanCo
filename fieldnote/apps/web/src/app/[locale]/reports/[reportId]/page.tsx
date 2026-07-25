@@ -75,9 +75,7 @@ export default async function ReviewPage({
       <header className="mb-8 border-b border-neutral-200 pb-6">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              {data.report.propertyAddress}
-            </h1>
+            <h1 className="text-2xl font-semibold tracking-tight">{data.report.propertyAddress}</h1>
             <p className="mt-1 text-sm text-ink-muted">
               {[data.report.clientName, data.report.reference].filter(Boolean).join(' · ')}
             </p>

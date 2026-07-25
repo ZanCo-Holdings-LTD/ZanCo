@@ -117,10 +117,15 @@ function locateQuote(text: string, quote: string): { start: number; end: number 
   if (index === -1) return null;
 
   const start = map[index];
-  const endMapped = map[Math.min(index + needle.length, map.length - 1)];
-  if (start === undefined || endMapped === undefined) return null;
+  // `map` holds the original index of each normalised character, so the last
+  // character of the match is at `index + needle.length - 1`. Taking the entry
+  // after it and adding one overshoots by a character, which quietly widens
+  // every repaired span — and a span is what a reviewer is shown as the exact
+  // words a finding came from.
+  const lastMapped = map[index + needle.length - 1];
+  if (start === undefined || lastMapped === undefined) return null;
 
-  return { start, end: Math.min(endMapped + 1, text.length) };
+  return { start, end: Math.min(lastMapped + 1, text.length) };
 }
 
 function foldChar(char: string): string {

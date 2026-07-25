@@ -53,7 +53,7 @@ export async function handleRenderPdf(context: JobContext): Promise<void> {
       // Not retryable: nothing about waiting changes an unreviewed field.
       throw new AppError('export_blocked', `Cannot export: ${gate.reasons.join('; ')}`, {
         retryable: false,
-        details: gate,
+        details: { ...gate },
       });
     }
 

@@ -49,11 +49,11 @@ export function renderSectionSpec(section: TemplateSectionDef): string {
 function describeType(type: string): string {
   switch (type) {
     case 'long_text':
-      return 'prose (several sentences; keep the inspector\'s phrasing)';
+      return "prose (several sentences; keep the inspector's phrasing)";
     case 'text':
       return 'short text (a phrase, not a sentence)';
     case 'number':
-      return 'number (digits only, no units — put units in the label\'s terms)';
+      return "number (digits only, no units — put units in the label's terms)";
     case 'boolean':
       return 'true or false';
     case 'enum':

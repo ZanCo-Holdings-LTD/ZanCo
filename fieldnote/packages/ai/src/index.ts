@@ -1,4 +1,5 @@
 export * from './deepgram.js';
+export * from './transcripts.js';
 export * from './structure.js';
 export * from './guardrails.js';
 export * from './embeddings.js';

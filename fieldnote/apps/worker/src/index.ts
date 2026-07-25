@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { toAppError } from '@fieldnote/shared';
 import { closeBrowser } from '@fieldnote/pdf';
 import { requireInternal, requireUser, verifyResendSignature } from './auth.js';
-import { db, repositories } from './db.js';
+import { repositories, workerDb } from './db.js';
 import { env } from './env.js';
 import { errorFields, log } from './logger.js';
 import { Runner } from './runner.js';
@@ -63,7 +63,7 @@ app.get('/health', async () => {
   let queue = { queued: 0, running: 0, dead: 0, oldestQueuedAgeSeconds: null as number | null };
 
   try {
-    queue = await repositories.jobs.depth(db);
+    queue = await repositories.jobs.depth(workerDb());
   } catch (error: unknown) {
     database = 'error';
     log.error('health check could not reach the database', errorFields(error));
@@ -101,7 +101,7 @@ const enqueueBody = z.object({
  */
 app.post('/jobs', { preHandler: requireInternal }, async (request, reply) => {
   const body = enqueueBody.parse(request.body);
-  const id = await repositories.jobs.enqueue(db, {
+  const id = await repositories.jobs.enqueue(workerDb(), {
     orgId: body.orgId,
     kind: body.kind,
     payload: body.payload,
@@ -130,12 +130,16 @@ const registerCaptureBody = z.object({
 app.post('/captures', { preHandler: requireUser }, async (request, reply) => {
   const body = registerCaptureBody.parse(request.body);
 
-  const role = await repositories.organisations.roleOf(db, body.orgId, request.user!.userId);
+  const role = await repositories.organisations.roleOf(
+    workerDb(),
+    body.orgId,
+    request.user!.userId,
+  );
   if (!role) {
     return reply.status(403).send({ error: { code: 'forbidden', message: 'Not a member' } });
   }
 
-  const captureId = await repositories.captures.register(db, {
+  const captureId = await repositories.captures.register(workerDb(), {
     orgId: body.orgId,
     reportId: body.reportId,
     clientId: body.clientId,
@@ -145,7 +149,7 @@ app.post('/captures', { preHandler: requireUser }, async (request, reply) => {
     localTranscript: body.localTranscript ?? null,
   });
 
-  await repositories.jobs.enqueue(db, {
+  await repositories.jobs.enqueue(workerDb(), {
     orgId: body.orgId,
     kind: 'transcribe_capture',
     payload: { orgId: body.orgId, reportId: body.reportId, captureId },
@@ -164,7 +168,8 @@ app.post('/captures', { preHandler: requireUser }, async (request, reply) => {
  */
 app.post('/webhooks/resend', async (request, reply) => {
   const secret = env.RESEND_WEBHOOK_SECRET;
-  if (!secret) return reply.status(503).send({ error: { code: 'internal', message: 'Not configured' } });
+  if (!secret)
+    return reply.status(503).send({ error: { code: 'internal', message: 'Not configured' } });
 
   const raw = (request as { rawBody?: string }).rawBody ?? '';
   const signature = request.headers['svix-signature'] ?? request.headers['resend-signature'];
@@ -177,7 +182,7 @@ app.post('/webhooks/resend', async (request, reply) => {
   const messageId = event.data?.email_id;
 
   if (event.type === 'email.opened' && messageId) {
-    await repositories.delivery.markOpened(db, messageId);
+    await repositories.delivery.markOpened(workerDb(), messageId);
   }
 
   return reply.status(204).send();

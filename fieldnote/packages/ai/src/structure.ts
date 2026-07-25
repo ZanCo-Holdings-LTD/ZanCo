@@ -30,12 +30,19 @@ export interface StructuringClientOptions {
 }
 
 /**
- * The parts of the request the SDK's published types do not yet cover.
- * `output_config` carries both the effort level and the JSON schema.
+ * Request fields the installed SDK's published types do not yet cover.
+ *
+ * The SDK's type definitions lag the API: `thinking: {type: 'adaptive'}` and
+ * `output_config` are both accepted at runtime but not yet in the .d.ts. They
+ * are collected here and cast once, rather than sprinkling casts through the
+ * call, so the day the types catch up this is the only thing to delete.
  */
-interface OutputConfig {
-  effort: string;
-  format: { type: 'json_schema'; schema: Record<string, unknown> };
+interface UntypedRequestFields {
+  thinking: { type: 'adaptive' };
+  output_config: {
+    effort: string;
+    format: { type: 'json_schema'; schema: Record<string, unknown> };
+  };
 }
 
 export function createClient(options: StructuringClientOptions): Anthropic {
@@ -123,9 +130,15 @@ async function callModel(
   messages: Anthropic.MessageParam[],
   usage: StructuringUsage,
 ): Promise<RawSectionOutput> {
-  const outputConfig: OutputConfig = {
-    effort: options.effort,
-    format: { type: 'json_schema', schema },
+  const untyped: UntypedRequestFields = {
+    // Adaptive thinking: the model decides how much reasoning a section needs.
+    // A one-field section should not pay for the deliberation a twelve-field
+    // section deserves.
+    thinking: { type: 'adaptive' },
+    output_config: {
+      effort: options.effort,
+      format: { type: 'json_schema', schema },
+    },
   };
 
   let response: Anthropic.Message;
@@ -133,10 +146,6 @@ async function callModel(
     response = await client.messages.create({
       model: options.model,
       max_tokens: options.maxTokens ?? 8192,
-      // Adaptive thinking: the model decides how much reasoning a section needs.
-      // A one-field section should not pay for the deliberation a twelve-field
-      // section deserves.
-      thinking: { type: 'adaptive' },
       system: [
         // Byte-identical across every call in the product.
         {
@@ -152,7 +161,7 @@ async function callModel(
         },
       ],
       messages,
-      ...({ output_config: outputConfig } as unknown as Record<string, never>),
+      ...(untyped as unknown as Record<string, never>),
     });
   } catch (error: unknown) {
     if (error instanceof Anthropic.APIError) {

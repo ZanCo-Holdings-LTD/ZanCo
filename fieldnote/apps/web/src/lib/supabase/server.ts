@@ -1,20 +1,16 @@
-import { createBrowserClient, createServerClient } from '@supabase/ssr';
+import 'server-only';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 /**
- * Supabase clients.
+ * Server Supabase client, for Server Components and route handlers.
  *
- * Only the anon key ever reaches the browser. The service role key lives in the
- * worker and in server-only route handlers, never here.
+ * `server-only` makes importing this from a client component a build error
+ * rather than a silent leak of `next/headers` into the browser bundle.
+ *
+ * Still the anon key: the server acts as the signed-in user so RLS applies.
+ * The service role key lives in the worker.
  */
-
-export function browserClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
-}
-
 export async function serverClient() {
   const cookieStore = await cookies();
 
@@ -24,7 +20,7 @@ export async function serverClient() {
     {
       cookies: {
         getAll: () => cookieStore.getAll(),
-        setAll: (toSet) => {
+        setAll: (toSet: { name: string; value: string; options: CookieOptions }[]) => {
           try {
             for (const { name, value, options } of toSet) {
               cookieStore.set(name, value, options);

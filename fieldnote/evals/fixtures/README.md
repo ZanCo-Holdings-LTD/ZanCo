@@ -35,7 +35,7 @@ One JSON file per fixture:
       "provider": "deepgram",
       "model": "nova-3",
       "meanConfidence": 0.91,
-      "durationMs": 1840000
+      "durationMs": 1840000,
     },
     "sections": [
       {
@@ -46,12 +46,12 @@ One JSON file per fixture:
             // The value on the signed report. `null` means the inspector did
             // not state it — producing a value here counts as a hallucination,
             // which is a hard fail.
-            "expected": ["Rising damp"]
+            "expected": ["Rising damp"],
           },
-          { "fieldKey": "relative_humidity", "expected": null }
-        ]
-      }
-    ]
+          { "fieldKey": "relative_humidity", "expected": null },
+        ],
+      },
+    ],
   },
   // The template shape travels with the fixture so an eval run stays
   // reproducible after the seed template changes.
@@ -71,11 +71,11 @@ One JSON file per fixture:
           "required": true,
           "enumValues": ["Rising damp", "Penetrating damp", "Condensation"],
           "extractionHint": "...",
-          "orderIndex": 1
-        }
-      ]
-    }
-  ]
+          "orderIndex": 1,
+        },
+      ],
+    },
+  ],
 }
 ```
 
@@ -88,13 +88,13 @@ pnpm eval --ci     # exits non-zero on any threshold failure
 
 ## What fails the build
 
-| Metric | Threshold | Why |
-| --- | --- | --- |
-| Hallucination rate | must be 0% | A value the inspector never said is a professional indemnity claim. This is the one number with no tolerance. |
-| Recall | > 0.85 | Below this, review takes longer than typing the report from scratch. |
-| Precision | > 0.80 | Wrong-but-mentioned values erode trust nearly as fast as invented ones. |
-| Mean edit distance | < 0.45 | A tripwire. It should be *falling* over time as the phrase corpus grows; a prompt change that raises it is a regression even if recall improves. |
-| Ungrounded values | 0 | Any value surviving without a resolved source span means the guardrail has a hole. |
+| Metric             | Threshold  | Why                                                                                                                                              |
+| ------------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Hallucination rate | must be 0% | A value the inspector never said is a professional indemnity claim. This is the one number with no tolerance.                                    |
+| Recall             | > 0.85     | Below this, review takes longer than typing the report from scratch.                                                                             |
+| Precision          | > 0.80     | Wrong-but-mentioned values erode trust nearly as fast as invented ones.                                                                          |
+| Mean edit distance | < 0.45     | A tripwire. It should be _falling_ over time as the phrase corpus grows; a prompt change that raises it is a regression even if recall improves. |
+| Ungrounded values  | 0          | Any value surviving without a resolved source span means the guardrail has a hole.                                                               |
 
 Include a spread of conditions, not just the easy ones. The M0 field test named
 the hard cases — a loft with a dehumidifier running, a plant room, a windy roof,

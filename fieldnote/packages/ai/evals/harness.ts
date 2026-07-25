@@ -81,8 +81,12 @@ export const THRESHOLDS = {
 };
 
 function isEmpty(value: unknown): boolean {
-  return value === null || value === undefined || value === '' ||
-    (Array.isArray(value) && value.length === 0);
+  return (
+    value === null ||
+    value === undefined ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0)
+  );
 }
 
 function asText(value: unknown): string {

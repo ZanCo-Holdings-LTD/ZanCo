@@ -124,7 +124,13 @@ export const ukDampTimberTemplate: SeedTemplate = {
           label: 'Wall construction',
           type: 'enum',
           required: true,
-          enumValues: ['Solid masonry', 'Cavity masonry', 'Timber frame', 'Mixed', 'Not established'],
+          enumValues: [
+            'Solid masonry',
+            'Cavity masonry',
+            'Timber frame',
+            'Mixed',
+            'Not established',
+          ],
           extractionHint:
             'Listen for "nine inch solid", "cavity", "brick and block". If the surveyor says they could not establish it, use "Not established".',
         },
@@ -245,7 +251,7 @@ export const ukDampTimberTemplate: SeedTemplate = {
           type: 'long_text',
           required: true,
           extractionHint:
-            'Numeric readings with location and height. Keep the surveyor\'s own units and qualifiers.',
+            "Numeric readings with location and height. Keep the surveyor's own units and qualifiers.",
         },
         {
           key: 'salt_contamination',
@@ -371,7 +377,7 @@ export const ukDampTimberTemplate: SeedTemplate = {
           type: 'long_text',
           required: true,
           extractionHint:
-            'Usually dictated last as a spoken summary. Preserve the surveyor\'s own emphasis and ordering.',
+            "Usually dictated last as a spoken summary. Preserve the surveyor's own emphasis and ordering.",
         },
         {
           key: 'remedial_works',
@@ -395,8 +401,7 @@ export const ukDampTimberTemplate: SeedTemplate = {
           label: 'Indicative cost',
           type: 'text',
           required: false,
-          extractionHint:
-            'Only record a figure the surveyor actually gives. Never estimate one.',
+          extractionHint: 'Only record a figure the surveyor actually gives. Never estimate one.',
         },
         {
           key: 'guarantee_offered',

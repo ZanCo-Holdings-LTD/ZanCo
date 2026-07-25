@@ -47,10 +47,7 @@ export async function attachEmbedding(
   exampleId: string,
   embedding: number[],
 ): Promise<void> {
-  await db
-    .update(phraseExamples)
-    .set({ embedding })
-    .where(eq(phraseExamples.id, exampleId));
+  await db.update(phraseExamples).set({ embedding }).where(eq(phraseExamples.id, exampleId));
 }
 
 export async function listPendingEmbedding(db: Database, limit = 100) {

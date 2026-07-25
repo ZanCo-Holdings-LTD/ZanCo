@@ -30,7 +30,9 @@ export function ExportBar({
   const [error, setError] = useState<string | null>(null);
 
   function jumpToNextAmber() {
-    const next = document.querySelector<HTMLElement>('[data-amber] input, [data-amber] textarea, [data-amber] select');
+    const next = document.querySelector<HTMLElement>(
+      '[data-amber] input, [data-amber] textarea, [data-amber] select',
+    );
     next?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     next?.focus({ preventScroll: true });
   }
@@ -41,9 +43,9 @@ export function ExportBar({
     try {
       const response = await fetch(`/api/reports/${reportId}/export`, { method: 'POST' });
       if (!response.ok) {
-        const body = (await response.json().catch(() => null)) as
-          | { error?: { message?: string } }
-          | null;
+        const body = (await response.json().catch(() => null)) as {
+          error?: { message?: string };
+        } | null;
         setError(body?.error?.message ?? 'Export failed');
         return;
       }

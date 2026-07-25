@@ -145,7 +145,9 @@ export async function meanCostPerReport(
 ): Promise<{ meanUsd: number; reportCount: number }> {
   const [row] = await db
     .select({
-      mean: sql<string | null>`avg(${reportCosts.transcriptionMicrosUsd} + ${reportCosts.structuringMicrosUsd})`,
+      mean: sql<
+        string | null
+      >`avg(${reportCosts.transcriptionMicrosUsd} + ${reportCosts.structuringMicrosUsd})`,
       count: sql<number>`count(*)::int`,
     })
     .from(reportCosts)

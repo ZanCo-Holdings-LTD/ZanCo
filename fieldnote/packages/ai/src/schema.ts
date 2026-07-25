@@ -93,8 +93,7 @@ function sourceSpanSchema(): Record<string, unknown> {
           },
           quote: {
             type: 'string',
-            description:
-              'The exact substring between charStart and charEnd. Checked mechanically.',
+            description: 'The exact substring between charStart and charEnd. Checked mechanically.',
           },
         },
         required: ['charStart', 'charEnd', 'quote'],

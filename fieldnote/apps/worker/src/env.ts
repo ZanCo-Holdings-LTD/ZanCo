@@ -1,4 +1,8 @@
-import { assertEmbeddingProviderConfigured, parseEnv, workerEnvSchema } from '@fieldnote/shared/env';
+import {
+  assertEmbeddingProviderConfigured,
+  parseEnv,
+  workerEnvSchema,
+} from '@fieldnote/shared/env';
 import type { WorkerEnv } from '@fieldnote/shared/env';
 
 /**
