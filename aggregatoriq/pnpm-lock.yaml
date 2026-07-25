@@ -96,6 +96,28 @@ importers:
         specifier: 3.2.7
         version: 3.2.7(@types/node@22.20.1)(tsx@4.20.6)
 
+  packages/parsers:
+    dependencies:
+      '@aggregatoriq/core':
+        specifier: workspace:*
+        version: link:../core
+      '@aggregatoriq/engine':
+        specifier: workspace:*
+        version: link:../engine
+      zod:
+        specifier: 4.4.3
+        version: 4.4.3
+    devDependencies:
+      '@types/node':
+        specifier: 22.20.1
+        version: 22.20.1
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: 3.2.7
+        version: 3.2.7(@types/node@22.20.1)(tsx@4.20.6)
+
 packages:
 
   '@esbuild/aix-ppc64@0.25.12':
