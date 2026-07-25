@@ -1,0 +1,32 @@
+{
+  "name": "@aggregatoriq/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./repositories": "./src/repositories/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "migrate": "tsx src/cli/migrate.ts",
+    "seed": "tsx src/cli/seed.ts",
+    "reset": "tsx src/cli/reset.ts"
+  },
+  "dependencies": {
+    "@aggregatoriq/core": "workspace:*",
+    "@aggregatoriq/engine": "workspace:*",
+    "drizzle-orm": "0.45.2",
+    "postgres": "3.4.9",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "vitest": "3.2.7"
+  }
+}
