@@ -1,0 +1,54 @@
+# Fly.io deployment for the Fieldnote worker.
+#
+#   fly deploy --config apps/worker/fly.toml --dockerfile apps/worker/Dockerfile .
+#
+# Secrets are set with `fly secrets set`, never in this file. See
+# docs/deployment.md for the full list.
+
+app = "fieldnote-worker"
+primary_region = "lhr"   # UK vertical one; add "dxb" when the GCC port lands
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  WORKER_PORT = "8080"
+  # Chromium and the LLM calls are both memory-hungry; four concurrent jobs
+  # fits comfortably in 2GB with headroom for a long report render.
+  WORKER_CONCURRENCY = "4"
+  LOG_LEVEL = "info"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # The runner polls continuously, so the machine must not be stopped when HTTP
+  # traffic goes quiet — a suspended worker is a queue that never drains.
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 50
+    hard_limit = 100
+
+[[http_service.checks]]
+  grace_period = "20s"
+  interval = "30s"
+  method = "GET"
+  path = "/health"
+  timeout = "5s"
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "2gb"
+
+# Draining in-flight jobs takes up to 25 seconds (see Runner.stop), so give the
+# machine long enough to finish rather than killing a half-sent delivery.
+[deploy]
+  strategy = "rolling"
+  wait_timeout = "5m"
+
+[experimental]
+  auto_rollback = true

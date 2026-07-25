@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { index, pgTable, primaryKey, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { char, index, pgTable, primaryKey, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { orgRoleEnum } from './enums.js';
 
 /**
@@ -9,6 +9,16 @@ import { orgRoleEnum } from './enums.js';
 export const organisations = pgTable('organisations', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: text('name').notNull(),
+  /** ISO 3166-1 alpha-2. Drives which templates and tax treatment apply. */
+  country: char('country', { length: 2 }).notNull().default('GB'),
+  /** ISO 4217. Every minor-unit money column on this org's rows uses it. */
+  baseCurrency: char('base_currency', { length: 3 }).notNull().default('GBP'),
+  /**
+   * UI language. Set independently of country: the GCC vertical has an
+   * English-speaking buyer and Arabic-speaking field crews, so the phone and
+   * the web app may legitimately differ.
+   */
+  defaultLocale: text('default_locale').notNull().default('en'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });

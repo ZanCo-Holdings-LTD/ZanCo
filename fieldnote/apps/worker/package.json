@@ -1,0 +1,30 @@
+{
+  "name": "@fieldnote/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "@fieldnote/ai": "workspace:*",
+    "@fieldnote/db": "workspace:*",
+    "@fieldnote/pdf": "workspace:*",
+    "@fieldnote/shared": "workspace:*",
+    "@supabase/supabase-js": "^2.46.1",
+    "fastify": "^5.1.0",
+    "jose": "^5.9.6",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
+  }
+}

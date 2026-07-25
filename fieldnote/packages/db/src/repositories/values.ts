@@ -93,6 +93,7 @@ export interface GeneratedValueInput {
   sourceSpan: SourceSpan | null;
   modelVersion: string;
   promptVersion: string;
+  engineVersion: string;
 }
 
 /**
@@ -124,6 +125,7 @@ export async function writeGenerated(
           sourceSpan: input.sourceSpan,
           modelVersion: input.modelVersion,
           promptVersion: input.promptVersion,
+          engineVersion: input.engineVersion,
         })
         .onConflictDoUpdate({
           target: [reportValues.reportId, reportValues.fieldId],
@@ -132,6 +134,7 @@ export async function writeGenerated(
             sourceSpan: input.sourceSpan,
             modelVersion: input.modelVersion,
             promptVersion: input.promptVersion,
+            engineVersion: input.engineVersion,
           },
         });
     }

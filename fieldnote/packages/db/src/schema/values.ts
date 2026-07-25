@@ -47,6 +47,12 @@ export const reportValues = pgTable(
 
     modelVersion: text('model_version'),
     promptVersion: text('prompt_version'),
+    /**
+     * Release that produced this value. With model and prompt version, any
+     * historical row traces to the exact code that generated it — required
+     * once the code that made it has been deployed over.
+     */
+    engineVersion: text('engine_version'),
 
     editedByHuman: boolean('edited_by_human').notNull().default(false),
     reviewedAt: timestamp('reviewed_at', { withTimezone: true }),

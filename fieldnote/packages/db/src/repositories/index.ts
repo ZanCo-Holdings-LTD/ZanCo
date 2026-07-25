@@ -13,5 +13,6 @@ export * as values from './values.js';
 export * as delivery from './delivery.js';
 export * as learning from './learning.js';
 export * as jobs from './jobs.js';
+export * as runs from './runs.js';
 export * as audit from './audit.js';
 export * as billing from './billing.js';

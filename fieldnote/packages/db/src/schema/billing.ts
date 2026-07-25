@@ -1,4 +1,4 @@
-import { index, integer, numeric, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { bigint, char, index, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { organisations } from './orgs.js';
 import { reports } from './reports.js';
 
@@ -13,6 +13,9 @@ export const subscriptions = pgTable(
     stripeCustomerId: text('stripe_customer_id'),
     stripeSubscriptionId: text('stripe_subscription_id'),
     planId: text('plan_id').notNull().default('solo_monthly'),
+    /** Per-seat price in minor units of `currency`: pence for GBP, fils for AED. */
+    unitAmountMinor: bigint('unit_amount_minor', { mode: 'number' }).notNull().default(0),
+    currency: char('currency', { length: 3 }).notNull().default('GBP'),
     /** Paid seats. Enforced when inviting a member. */
     seats: integer('seats').notNull().default(1),
     status: text('status').notNull().default('trialing'),
@@ -45,10 +48,15 @@ export const reportCosts = pgTable(
       .notNull()
       .references(() => reports.id, { onDelete: 'cascade' })
       .unique(),
-    transcriptionUsd: numeric('transcription_usd', { precision: 10, scale: 6 })
+    /**
+     * Millionths of a USD, integer only. A per-report inference cost is a
+     * fraction of a cent, and no money column in this schema is a float.
+     */
+    transcriptionMicrosUsd: bigint('transcription_micros_usd', { mode: 'number' })
       .notNull()
-      .default('0'),
-    structuringUsd: numeric('structuring_usd', { precision: 10, scale: 6 }).notNull().default('0'),
+      .default(0),
+    structuringMicrosUsd: bigint('structuring_micros_usd', { mode: 'number' }).notNull().default(0),
+    costCurrency: char('cost_currency', { length: 3 }).notNull().default('USD'),
     inputTokens: integer('input_tokens').notNull().default(0),
     outputTokens: integer('output_tokens').notNull().default(0),
     cachedInputTokens: integer('cached_input_tokens').notNull().default(0),

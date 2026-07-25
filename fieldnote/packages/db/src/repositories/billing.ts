@@ -4,6 +4,20 @@ import { structuringCostUsd, transcriptionCostUsd } from '@fieldnote/shared';
 import type { Database } from '../client.js';
 import { reportCosts, subscriptions } from '../schema/billing.js';
 
+/**
+ * Money crosses the storage boundary as integer minor units, never as a float.
+ * These two functions are the only place the conversion happens.
+ */
+const MICROS_PER_USD = 1_000_000;
+
+function toMicros(usd: number): number {
+  return Math.round(usd * MICROS_PER_USD);
+}
+
+function fromMicros(micros: number): number {
+  return micros / MICROS_PER_USD;
+}
+
 export async function getSubscription(db: Database, orgId: string) {
   const [row] = await db
     .select()
@@ -59,24 +73,26 @@ export async function addStructuringCost(
   reportId: string,
   usage: StructuringUsage,
 ): Promise<void> {
-  const usd = structuringCostUsd(usage);
+  const micros = toMicros(structuringCostUsd(usage));
+  const cached = usage.cacheReadInputTokens + usage.cacheCreationInputTokens;
+
   await db
     .insert(reportCosts)
     .values({
       orgId,
       reportId,
-      structuringUsd: usd.toFixed(6),
+      structuringMicrosUsd: micros,
       inputTokens: usage.inputTokens,
       outputTokens: usage.outputTokens,
-      cachedInputTokens: usage.cacheReadInputTokens + usage.cacheCreationInputTokens,
+      cachedInputTokens: cached,
     })
     .onConflictDoUpdate({
       target: reportCosts.reportId,
       set: {
-        structuringUsd: sql`${reportCosts.structuringUsd} + ${usd.toFixed(6)}`,
+        structuringMicrosUsd: sql`${reportCosts.structuringMicrosUsd} + ${micros}`,
         inputTokens: sql`${reportCosts.inputTokens} + ${usage.inputTokens}`,
         outputTokens: sql`${reportCosts.outputTokens} + ${usage.outputTokens}`,
-        cachedInputTokens: sql`${reportCosts.cachedInputTokens} + ${usage.cacheReadInputTokens + usage.cacheCreationInputTokens}`,
+        cachedInputTokens: sql`${reportCosts.cachedInputTokens} + ${cached}`,
       },
     });
 }
@@ -87,19 +103,19 @@ export async function addTranscriptionCost(
   reportId: string,
   durationMs: number,
 ): Promise<void> {
-  const usd = transcriptionCostUsd(durationMs);
+  const micros = toMicros(transcriptionCostUsd(durationMs));
   await db
     .insert(reportCosts)
     .values({
       orgId,
       reportId,
-      transcriptionUsd: usd.toFixed(6),
+      transcriptionMicrosUsd: micros,
       audioMs: durationMs,
     })
     .onConflictDoUpdate({
       target: reportCosts.reportId,
       set: {
-        transcriptionUsd: sql`${reportCosts.transcriptionUsd} + ${usd.toFixed(6)}`,
+        transcriptionMicrosUsd: sql`${reportCosts.transcriptionMicrosUsd} + ${micros}`,
         audioMs: sql`${reportCosts.audioMs} + ${durationMs}`,
       },
     });
@@ -114,9 +130,10 @@ export async function reportCost(db: Database, reportId: string) {
   if (!row) return null;
   return {
     ...row,
-    transcriptionUsd: Number(row.transcriptionUsd),
-    structuringUsd: Number(row.structuringUsd),
-    totalUsd: Number(row.transcriptionUsd) + Number(row.structuringUsd),
+    // Converted back to USD only at the boundary, for display and alerting.
+    transcriptionUsd: fromMicros(row.transcriptionMicrosUsd),
+    structuringUsd: fromMicros(row.structuringMicrosUsd),
+    totalUsd: fromMicros(row.transcriptionMicrosUsd + row.structuringMicrosUsd),
   };
 }
 
@@ -128,14 +145,14 @@ export async function meanCostPerReport(
 ): Promise<{ meanUsd: number; reportCount: number }> {
   const [row] = await db
     .select({
-      mean: sql<string | null>`avg(${reportCosts.transcriptionUsd} + ${reportCosts.structuringUsd})`,
+      mean: sql<string | null>`avg(${reportCosts.transcriptionMicrosUsd} + ${reportCosts.structuringMicrosUsd})`,
       count: sql<number>`count(*)::int`,
     })
     .from(reportCosts)
     .where(sql`${reportCosts.orgId} = ${orgId} and ${reportCosts.updatedAt} >= ${since}`);
 
   return {
-    meanUsd: row?.mean == null ? 0 : Number(row.mean),
+    meanUsd: row?.mean == null ? 0 : fromMicros(Number(row.mean)),
     reportCount: row?.count ?? 0,
   };
 }

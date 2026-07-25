@@ -22,6 +22,7 @@ export const reportVersions = pgTable(
     /** Frozen copy of every value at render time, for reproducibility. */
     snapshot: text('snapshot'),
     byteSize: integer('byte_size'),
+    engineVersion: text('engine_version'),
     renderedAt: timestamp('rendered_at', { withTimezone: true }).notNull().defaultNow(),
     renderedBy: uuid('rendered_by'),
   },

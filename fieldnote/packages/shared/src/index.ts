@@ -5,3 +5,5 @@ export * from './pricing.js';
 export * from './errors.js';
 export * from './cost.js';
 export * from './slug.js';
+export * from './version.js';
+export * from './payments.js';
