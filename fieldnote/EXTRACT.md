@@ -39,11 +39,11 @@ pnpm check
 2. **Add the repository secrets** CI needs:
    - `ANTHROPIC_API_KEY` — for the eval job.
 
-4. **Set branch protection** on `main` requiring the `static`, `unit` and `rls`
+3. **Set branch protection** on `main` requiring the `static`, `unit` and `rls`
    jobs. The RLS job is the one that matters — it proves cross-org isolation
    fails closed, and merging past it is how a tenancy bug ships.
 
-5. **Delete `fieldnote/` from the ZanCo repository** once the extraction is
+4. **Delete `fieldnote/` from the ZanCo repository** once the extraction is
    verified, so there is exactly one copy.
 
 ## What is not included
