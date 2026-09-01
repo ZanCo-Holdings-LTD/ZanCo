@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 240" role="img" aria-label="Z30 Labs">
+  <title>Z30 Labs</title>
+  <!-- The venture's own wordmark, carried across from Z30labs-football.
+
+       One change from the original: the dark is set explicitly to this site's
+       text colour rather than taken from currentColor. The original lives in
+       an app with a dark theme and a light one; here it sits on a white card
+       in a single-theme site, and an SVG loaded through an img tag is a
+       separate document that would resolve currentColor to plain black
+       regardless.
+
+       The red is untouched. The red is the brand.
+
+       Note for anyone editing this comment: a double hyphen is illegal inside
+       an XML comment. It does not warn, it does not degrade, it makes the
+       whole file unparseable and the image renders as a broken icon. -->
+  <path fill="#1A1C23" transform="translate(30,40) skewX(-14)"
+        d="M0 0 H210 V34 L74 116 H210 V150 H0 V116 L136 34 H0 Z"/>
+  <g transform="translate(255,40) skewX(-14)">
+    <g fill="none" stroke="#1A1C23" stroke-width="16"
+       stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 20 C6 9 19 3 33 3 C48 3 58 10 58 21 C58 31 48 37 35 37
+               C49 37 61 43 61 56 C61 69 48 77 32 77 C18 77 6 72 3 61"/>
+      <rect x="82" y="4" width="60" height="73" rx="30"/>
+    </g>
+    <path fill="#e8112d" d="M2 120 H182 V146 H2 Z"/>
+  </g>
+</svg>

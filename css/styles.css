@@ -424,6 +424,16 @@ h2 {
   gap: 32px;
 }
 
+/* Two across on a wide screen, not three.
+   With four ventures, auto-fill puts three on the first row and leaves the
+   fourth alone beside a column of nothing -- which reads as a card that has
+   been forgotten rather than one that is simply fourth. Two rows of two is
+   balanced at any even count, and the wider cards let the descriptions breathe
+   instead of wrapping every four words. */
+@media (min-width: 900px) {
+  .projects { grid-template-columns: repeat(2, 1fr); }
+}
+
 .project {
   background: #fff;
   border: 1px solid rgba(0,0,0,0.04);
@@ -479,13 +489,34 @@ h2 {
 .tag.status-smoke { background: rgba(59, 130, 246, 0.1);      color: var(--accent-primary); }
 .tag.status-soon  { background: rgba(245, 158, 11, 0.1);      color: #D97706; }
 
-/* Venture brand logo inside a portfolio card */
+/* Structure tag: which venture a card sits under, as opposed to what stage it
+   is at. Outlined rather than filled so it reads as a different kind of fact
+   from the status tag beside it -- one says how far along, the other says
+   where in the group. */
+.tag.tag-parent {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.12);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Venture brand logo inside a portfolio card.
+   Height-constrained rather than width-constrained, because the marks are
+   different shapes -- Zannex's is nearly square, Z30 Labs' is a wide wordmark
+   -- and matching their heights is what makes them sit on the same line as
+   each other down the page. A width cap would make the wordmark tiny beside
+   the square one. */
 .venture-logo {
   height: 88px;
   width: auto;
+  max-width: 100%;
   align-self: flex-start;
   margin: 4px 0 -4px;
 }
+
+/* The wordmark is much wider than it is tall, so the shared 88px height would
+   make it overhang a narrow card. */
+.venture-logo[src$=".svg"] { height: 62px; }
 
 .project h3 {
   font-size: var(--type-xl);
