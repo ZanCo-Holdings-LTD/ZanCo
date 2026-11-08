@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Derive every raster image the site serves from the masters in images/src/.
 
+The venture logos are not derived here: Zannex Travels and Z30 Labs ship their
+wordmarks as SVG, copied from each venture's own repository (public/logo.svg in
+ZanNex-Travels, the brand pack in Z30labs-football). To update one, copy the
+new SVG over images/<venture>-logo.svg.
+
     python3 scripts/make-images.py
 
 The masters are the only hand-made files. Everything else under images/ that
@@ -58,10 +63,6 @@ def main() -> None:
     m = fit_height(mark, 260)
     og.paste(m, ((1200 - m.width) // 2, (630 - m.height) // 2), m)
     og.save(OUT / "og-image.png", optimize=True)
-
-    # Zannex Travels card logo: displayed at 88px tall, shipped at 3x.
-    zannex = Image.open(SRC / "zannex-logo.png").convert("RGBA")
-    fit_height(zannex, 264).save(OUT / "zannex-logo.png", optimize=True)
 
     for f in sorted(OUT.glob("*.png")):
         print(f"{f.relative_to(ROOT)}  {Image.open(f).size}  {f.stat().st_size // 1024} KB")

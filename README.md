@@ -25,7 +25,8 @@ no package manager, no build step on the host.
 ├── css/styles.css         All styles; design tokens in the :root block
 ├── js/main.js             Mobile nav toggle
 ├── fonts/                 Inter, self-hosted (variable, latin + latin-ext)
-├── images/                Served images. images/src/ holds the masters.
+├── images/                Served images. images/src/ holds the raster masters;
+│                          venture logos are SVGs copied from each venture's repo.
 ├── _headers               Response headers. The single source of truth for
 │                          the security policy (see Security below).
 ├── _redirects             Hides maintainer files on Netlify / Cloudflare Pages
