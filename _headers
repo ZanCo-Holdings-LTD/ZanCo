@@ -1,0 +1,32 @@
+# Response headers for every page and asset.
+#
+# Netlify and Cloudflare Pages both read this file from the publish directory,
+# so the policy travels with the site rather than living in a host dashboard.
+# GitHub Pages ignores it: GitHub Pages cannot send custom response headers at
+# all, which is the whole reason securityheaders.com gave the site an F. Until
+# the site is served by a host that reads this file, the browser-side fallback
+# is the Content-Security-Policy <meta> tag that scripts/sync-partials.mjs
+# copies from here into every page (minus frame-ancestors, which browsers do
+# not accept in a meta tag).
+#
+# This file is the single source of truth for the policy. Do not repeat the
+# headers in netlify.toml: Netlify merges the two and lets the toml win, which
+# is how a policy ends up edited in one place and served from another.
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Cache-Control: public, max-age=600
+
+# Fonts and images never change in place (a new asset gets a new name), so they
+# can be cached for a year. The stylesheet and script can change, so they keep
+# the short default above.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/images/*
+  Cache-Control: public, max-age=604800

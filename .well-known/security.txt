@@ -1,0 +1,7 @@
+# Security contact for zancoholdings.com and ZanCo Holdings LTD products.
+# Format: RFC 9116.
+Contact: mailto:zancoholdings.uk@gmail.com
+Expires: 2027-11-08T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://zancoholdings.com/.well-known/security.txt
+Policy: https://zancoholdings.com/support.html
