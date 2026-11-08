@@ -45,9 +45,10 @@
   --radius-md: 20px;
   --radius-lg: 32px;
 
+  --header-h:      96px;
   --content-width: 1140px;
   --section-gap:   120px;
-  --scroll-margin: 140px;
+  --scroll-margin: calc(var(--header-h) + 32px);
 
   --font-main: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
@@ -117,50 +118,48 @@ a:hover { color: var(--accent-primary); }
 .wrap {
   max-width: var(--content-width);
   margin: 0 auto;
-  padding: var(--space-md) var(--space-md) 100px;
-  animation: fade-in-up 0.8s ease-out forwards;
+  padding: calc(var(--header-h) + 40px) var(--space-md) 100px;
+  /* No fill-mode: a lingering transform on .wrap would turn the fixed header
+     into an absolutely positioned one and let it scroll away. */
+  animation: fade-in-up 0.8s ease-out;
 }
 
 /* ============================================================
-   NAVIGATION
-   ============================================================ */
+   NAVIGATION: fixed header (experimental)
+   ============================================================
+   The header does not scroll. The page starts below it (see .wrap) and
+   section anchors leave room for it (see --scroll-margin). */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.25);
+}
+
 .nav {
+  max-width: var(--content-width);
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-nav);
-  border-radius: 999px;
-  position: sticky;
-  top: var(--space-md);
-  z-index: 100;
-  margin-bottom: 60px;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.nav:hover {
-  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  padding-left: var(--space-xs);
+  gap: 18px;
   color: inherit;
+  height: 100%;
 }
 .brand:hover { color: inherit; }
-
-.brand img {
-  height: 44px;
-  width: auto;
-}
 
 .brand .name {
   display: flex;
@@ -180,6 +179,51 @@ a:hover { color: var(--accent-primary); }
   font-size: var(--type-xs);
   font-weight: 500;
 }
+
+/* --- The mark ------------------------------------------------------------
+   The flat logo, with a sweep of light that crosses it every few seconds.
+   The sweep is a gradient clipped to the shape of the mark by a mask, so it
+   never spills onto the bar. */
+.brand-mark {
+  position: relative;
+  display: block;
+  width: 124px;
+  height: 72px;
+  flex: none;
+}
+
+.brand-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
+}
+
+.brand-mark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  -webkit-mask: url('/images/logo-mark.png') center / contain no-repeat;
+  mask: url('/images/logo-mark.png') center / contain no-repeat;
+  background: linear-gradient(115deg,
+    transparent 30%,
+    rgba(59, 130, 246, 0.55) 45%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(139, 92, 246, 0.55) 55%,
+    transparent 70%);
+  background-size: 300% 100%;
+  animation: sheen 5.5s ease-in-out infinite;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+@keyframes sheen {
+  0%, 55% { background-position: 120% 0; }
+  85%, 100% { background-position: -20% 0; }
+}
+}
+
 
 .navlinks {
   display: flex;
@@ -644,23 +688,23 @@ h3 {
   .card          { padding: 28px; }
   .project       { padding: 28px; }
 
-  .nav {
-    flex-wrap: wrap;
-    border-radius: 24px;
-    padding: 12px var(--space-sm);
-  }
+  :root { --header-h: 72px; }
 
-  .brand img { height: 36px; }
+  .brand-mark { width: 92px; height: 54px; }
 
   .navlinks {
     display: none;
-    width: 100%;
+    position: absolute;
+    top: var(--header-h);
+    left: 0; right: 0;
     flex-direction: column;
     align-items: stretch;
-    padding-top: var(--space-sm);
-    margin-top: var(--space-xs);
+    padding: var(--space-sm) var(--space-md) var(--space-md);
     border-top: 1px solid var(--line-soft);
-    background: transparent;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: #fff;
+    box-shadow: 0 20px 30px -20px rgba(0, 0, 0, 0.25);
   }
 
   .navlinks.active { display: flex; }
@@ -681,5 +725,6 @@ h3 {
   html { scroll-behavior: auto; }
   .wrap { animation: none; }
   .nav, .card, .project, .mini, .btn, .pill, a { transition: none; }
-  .nav:hover, .card:hover, .project:hover, .mini:hover, .btn:hover { transform: none; }
+  .card:hover, .project:hover, .mini:hover, .btn:hover { transform: none; }
+  .brand-mark::after { animation: none; background-position: 50% 0; }
 }
