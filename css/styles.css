@@ -46,6 +46,8 @@
   --radius-lg: 32px;
 
   --header-h:      96px;
+  --logo3d-side:   #EEF0F4;  /* the extruded side of the 3D mark; try #C8102E for red */
+  --logo3d-back:   #1A1C23;  /* the thin dark layer at the very back */
   --content-width: 1140px;
   --section-gap:   120px;
   --scroll-margin: calc(var(--header-h) + 32px);
@@ -181,12 +183,12 @@ a:hover { color: var(--accent-primary); }
 }
 
 /* --- The 3D mark ---------------------------------------------------------
-   The mark faces forward, exactly as the flat logo did. Behind it sits a
-   stack of copies, each a pixel further back and a fraction offset down and
-   to the right, so the thickness shows as an extruded edge without tilting
-   the face. The light sweep is the only motion at rest; while the pointer is
-   over the mark it tilts a few degrees towards it. The layers are added by
-   js/logo3d.js; with scripts off there is one flat layer, the old logo. */
+   The mark faces forward, exactly as the flat logo did, and does not move.
+   Behind it sits a stack of mark-shaped layers, each a pixel further back
+   and a fraction offset down and to the right, so the thickness shows as an
+   extruded edge without tilting the face. The light sweep is the only
+   motion. The layers are added by js/logo3d.js; with scripts off there is
+   one flat layer, the old logo. */
 .logo3d {
   display: block;
   width: 124px;
@@ -202,8 +204,6 @@ a:hover { color: var(--accent-primary); }
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transform: none;
-  transition: transform 0.35s ease-out;
 }
 
 .logo3d-face,
@@ -213,14 +213,20 @@ a:hover { color: var(--accent-primary); }
   width: 100%;
   height: 100%;
   object-fit: contain;
-  backface-visibility: visible;
   pointer-events: none;
 }
 
-/* Back layers are darker, which is what sells the thickness: the sides of
-   the object sit in shadow while the front catches the light. */
-.logo3d-layer { filter: brightness(0.45) saturate(0.5); } /* overridden per layer by the script */
-.logo3d-face  { filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.18)); }
+/* The sides. Each layer is the shape of the mark, cut with a mask and filled
+   with a flat colour, so the colour is one token rather than a filter. Light
+   filling with a thin dark layer at the very back: a dark face, pale sides,
+   dark base. */
+.logo3d-layer {
+  -webkit-mask: url('/images/logo-mark.png') center / contain no-repeat;
+  mask: url('/images/logo-mark.png') center / contain no-repeat;
+  background: var(--logo3d-side);
+}
+.logo3d-layer--back { background: var(--logo3d-back); }
+.logo3d-face { filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.14)); }
 
 /* A light sweep across the front face, clipped to the shape of the mark. */
 .logo3d-sheen {
