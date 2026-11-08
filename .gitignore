@@ -4,6 +4,7 @@
 # Local tooling / editor
 .claude/
 .vscode/
+node_modules/
 
-# Vercel (legacy — the site deploys via GitHub Pages, not Vercel)
-.vercel/
+# Preview screenshots and other local output
+screenshots/

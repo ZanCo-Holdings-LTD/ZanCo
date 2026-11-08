@@ -1,0 +1,25 @@
+# Netlify build configuration.
+#
+# There is no build. The site is HTML, CSS, one small script and two font
+# files, so the command is empty on purpose rather than missing. Response
+# headers are NOT set here: they live in _headers, which Netlify reads from the
+# publish directory and which Cloudflare Pages reads in the same format. One
+# copy of the security policy beats two that can disagree.
+#
+# The publish directory is the repository root because GitHub Pages, the
+# current host, can only publish the root or /docs. The files that should not
+# be public are hidden by _redirects instead.
+
+[build]
+  base = ""
+  publish = "."
+  command = ""
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[context.deploy-preview]
+  publish = "."
+
+[context.branch-deploy]
+  publish = "."

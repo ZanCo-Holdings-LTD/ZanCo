@@ -1,0 +1,20 @@
+# Keeps the shared markup honest. The nav, footer and head block are written
+# once in partials/ and stamped into every page by scripts/sync-partials.mjs;
+# this job fails if a page has drifted from the partials, if the CSP meta tag
+# no longer matches _headers, or if a page contains inline styles or scripts
+# that the Content-Security-Policy would block.
+name: check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  partials:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/sync-partials.mjs --check

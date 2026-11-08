@@ -1,0 +1,12 @@
+# Netlify and Cloudflare Pages redirect rules.
+#
+# The repository root is the publish directory, so files that exist for the
+# people who maintain the site would otherwise be served to the public. These
+# rules hide them. GitHub Pages has no equivalent; it serves everything.
+/README.md        /404.html  404
+/netlify.toml     /404.html  404
+/scripts/*        /404.html  404
+/partials/*       /404.html  404
+
+# One canonical host.
+https://www.zancoholdings.com/*  https://zancoholdings.com/:splat  301!
