@@ -182,9 +182,10 @@ a:hover { color: var(--accent-primary); }
 
 /* --- The 3D mark ---------------------------------------------------------
    A perspective stage holding a stack of copies of the flat mark, each a
-   little further back on the z axis, so the mark reads as a solid object
-   with thickness when it turns. The layers are added by js/logo3d.js; with
-   scripts off there is one flat layer, which is the old logo. */
+   pixel further back on the z axis, so the mark reads as a solid object
+   with thickness. The mark holds one pose; the only motion is the light
+   sweep across its face. The layers are added by js/logo3d.js; with scripts
+   off there is one flat layer, which is the old logo. */
 .logo3d {
   display: block;
   width: 124px;
@@ -200,8 +201,7 @@ a:hover { color: var(--accent-primary); }
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transform: rotateX(12deg) rotateY(-28deg);
-  will-change: transform;
+  transform: rotateX(16deg) rotateY(-38deg);
 }
 
 .logo3d-face,
@@ -217,8 +217,8 @@ a:hover { color: var(--accent-primary); }
 
 /* Back layers are darker, which is what sells the thickness: the sides of
    the object sit in shadow while the front catches the light. */
-.logo3d-layer { filter: brightness(0.42) saturate(0.5); }
-.logo3d-face  { filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.22)); }
+.logo3d-layer { filter: brightness(0.45) saturate(0.5); } /* overridden per layer by the script */
+.logo3d-face  { filter: drop-shadow(0 22px 22px rgba(0, 0, 0, 0.28)); }
 
 /* A light sweep across the front face, clipped to the shape of the mark. */
 .logo3d-sheen {
@@ -243,13 +243,6 @@ a:hover { color: var(--accent-primary); }
   85%, 100% { background-position: -20% 0; }
 }
 
-/* Idle motion when no pointer is near. JS pauses this while it steers. */
-@keyframes turn {
-  0%   { transform: rotateX(12deg) rotateY(-34deg); }
-  50%  { transform: rotateX(6deg)  rotateY(34deg); }
-  100% { transform: rotateX(12deg) rotateY(-34deg); }
-}
-.logo3d-stage.is-idle { animation: turn 9s ease-in-out infinite; }
 
 .navlinks {
   display: flex;
@@ -752,6 +745,5 @@ h3 {
   .wrap { animation: none; }
   .nav, .card, .project, .mini, .btn, .pill, a { transition: none; }
   .card:hover, .project:hover, .mini:hover, .btn:hover { transform: none; }
-  .logo3d-stage.is-idle { animation: none; }
   .logo3d-sheen { animation: none; background-position: 50% 0; }
 }
