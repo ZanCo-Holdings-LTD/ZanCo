@@ -181,11 +181,12 @@ a:hover { color: var(--accent-primary); }
 }
 
 /* --- The 3D mark ---------------------------------------------------------
-   A perspective stage holding a stack of copies of the flat mark, each a
-   pixel further back on the z axis, so the mark reads as a solid object
-   with thickness. The mark holds one pose; the only motion is the light
-   sweep across its face. The layers are added by js/logo3d.js; with scripts
-   off there is one flat layer, which is the old logo. */
+   The mark faces forward, exactly as the flat logo did. Behind it sits a
+   stack of copies, each a pixel further back and a fraction offset down and
+   to the right, so the thickness shows as an extruded edge without tilting
+   the face. The light sweep is the only motion at rest; while the pointer is
+   over the mark it tilts a few degrees towards it. The layers are added by
+   js/logo3d.js; with scripts off there is one flat layer, the old logo. */
 .logo3d {
   display: block;
   width: 124px;
@@ -201,7 +202,8 @@ a:hover { color: var(--accent-primary); }
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transform: rotateX(16deg) rotateY(-38deg);
+  transform: none;
+  transition: transform 0.35s ease-out;
 }
 
 .logo3d-face,
@@ -218,7 +220,7 @@ a:hover { color: var(--accent-primary); }
 /* Back layers are darker, which is what sells the thickness: the sides of
    the object sit in shadow while the front catches the light. */
 .logo3d-layer { filter: brightness(0.45) saturate(0.5); } /* overridden per layer by the script */
-.logo3d-face  { filter: drop-shadow(0 22px 22px rgba(0, 0, 0, 0.28)); }
+.logo3d-face  { filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.18)); }
 
 /* A light sweep across the front face, clipped to the shape of the mark. */
 .logo3d-sheen {
