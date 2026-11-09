@@ -563,8 +563,8 @@ h3 {
   font-weight: 500;
 }
 
-/* Venture logo inside a card. Height-constrained because the marks are
-   different shapes: Zannex's is nearly square, Z30 Labs' is a wide wordmark. */
+/* Venture logo inside a card. Height-constrained so the wordmarks line up
+   with each other down the page whatever their proportions. */
 .venture-logo {
   height: 88px;
   width: auto;
